@@ -168,7 +168,7 @@
 			  "hello everybody" "hi everyone")))
     (react speaker *greetings*))
    ((one-of speech
-	    '("*kicks tree*" "*kick tree*"))
+	    '("*kicks tree*" "*kick tree*" "shake tree" "shakes tree"))
     (if (and
 	 (rarely)
 	 (assoc speaker *special-drops*))
