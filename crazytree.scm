@@ -176,6 +176,7 @@
   (let* ((str (format "CrazyTree : ~a" msg))
          (len (+ (string-length str) 1)))
     (log "<~a" str)
+    (sys-sleep 1)
     (write-u16 #x8c)
     (write-u16 (+ len 4))
     (write-str str len)
