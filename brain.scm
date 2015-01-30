@@ -159,12 +159,14 @@
   (cond
    ((one-of speech
 	    '("hi tree" "hi tree!" "hello tree" "hello tree!"
-	      "hey tree" "tree?"
-	      "hi all" "hello everyone" "hello all" "hello everybody"
-	      "hi everyone"))
+	      "hey tree" "tree?"))
     (if (and (maybe) (string=? "mahouking" speaker))
 	"hi noob"
 	(react speaker *greetings*)))
+   ((and (maybe)
+	 (one-of speech '("hi all" "hello everyone" "hello all"
+			  "hello everybody" "hi everyone")))
+    (react speaker *greetings*))
    ((one-of speech
 	    '("*kicks tree*" "*kick tree*"))
     (if (and
