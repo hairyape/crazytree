@@ -6,6 +6,7 @@
 (use gauche.uvector)
 (use srfi-60)
 (use srfi-98)
+(use brain)
 
 (define-record-type world #t #t
   address port name (online-users) maintenance new)
@@ -171,6 +172,15 @@
     ((99) "Username permanently erased.")
     (else (format "Unknown error ~a" code))))
 
+(define (chat-message msg)
+  (let* ((str (format "CrazyTree : ~a" msg))
+         (len (+ (string-length str) 1)))
+    (log "<~a" str)
+    (write-u16 #x8c)
+    (write-u16 (+ len 4))
+    (write-str str len)
+    (flush)))
+
 ;;; Being handling
 (define being (make-hash-table 'eqv?))
 
@@ -202,6 +212,11 @@
 
 (define (being-chat len id msg)
   (log "~a> ~a" (hash-table-get being id id) msg)
+  (if (hash-table-exists? being id)
+      (let* ((sender (hash-table-get being id))
+             (reply (say-something msg sender)))
+        (if (string? reply)
+            (chat-message reply))))
   'cont)
 
 (define (being-emotion id emote)
