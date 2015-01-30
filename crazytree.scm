@@ -175,11 +175,15 @@
 (define being (make-hash-table 'eqv?))
 
 ;;; actual hash table update is done when we get being-name-response
-(define (add-being id)
-  (unless (hash-table-exists? being id)
-    (write-u16 #x94)
-    (write-u32 id)
-    (flush)))
+(define (add-being id job)
+  (log "adding being ~a job ~a" id job)
+  (if (or (<= job 25)
+          (and (>= job 4001)
+               (<= job 4049)))
+      (unless (hash-table-exists? being id)
+        (write-u16 #x94)
+        (write-u32 id)
+        (flush))))
 
 (define (delete-being id)
   (hash-table-delete! being id))
@@ -204,8 +208,8 @@
   (log "Emote ~a> ~a" (hash-table-get being id id) (emote-text emote))
   'cont)
 
-(define (being-move id rest)
-  (add-being id)
+(define (being-move id speed stun-mode status-effects options job rest)
+  (add-being id job)
   'cont)
 
 (define (being-move-2 u8v)
@@ -232,8 +236,8 @@
 (define (being-status-change u8v)
   'cont)
 
-(define (being-visible id rest)
-  (add-being id)
+(define (being-visible id speed stun-mode status-effects options job rest)
+  (add-being id job)
   'cont)
 
 ;;; Player handling
@@ -307,7 +311,8 @@
 (define (player-unequip u8v)
   'cont)
 
-(define (player-update-1 u8v)
+(define (player-update-1 id speed stun-mode status-effects options job remaining)
+  (add-being id job)
   'cont)
 
 (define (player-update-2 u8v)
@@ -496,7 +501,12 @@
             (#x0c0 (being-emotion ((id (read-u32))
                                    (emote (read-u8)))))
             (#x07b (being-move ((id (read-u32))
-                                (rest (read-u8v 54)))))
+                                (speed (read-u16))
+                                (stun-mode (read-u16))
+                                (status-effects (read-u16))
+                                (options (read-u16))
+                                (job (read-u16))
+                                (rest (read-u8v 44)))))
             (#x086 (being-move-2 ((u8v (read-u8v 14)))))
             (#x095 (being-name-response ((id (read-u32))
                                          (name (read-str 24)))))
@@ -507,7 +517,12 @@
             (#x07c (being-spawn ((u8v (read-u8v 39)))))
             (#x196 (being-status-change ((u8v (read-u8v 7)))))
             (#x078 (being-visible ((id (read-u32))
-                                   (rest (read-u8v 48)))))
+                                   (speed (read-u16))
+                                   (stun-mode (read-u16))
+                                   (status-effects (read-u16))
+                                   (options (read-u16))
+                                   (job (read-u16))
+                                   (rest (read-u8v 38)))))
 
             (#x13c (player-arrow-equip ((u8v (read-u8v 2)))))
             (#x13b (player-arrow-message ((u8v (read-u8v 2)))))
@@ -534,7 +549,13 @@
             (#x119 (player-status-change ((u8v (read-u8v 11)))))
             (#x088 (player-stop ((u8v (read-u8v 8)))))
             (#x0ac (player-unequip ((u8v (read-u8v 5)))))
-            (#x1d8 (player-update-1 ((u8v (read-u8v 52)))))
+            (#x1d8 (player-update-1 ((id (read-u32))
+                                     (speed (read-u16))
+                                     (stun-mode (read-u16))
+                                     (status-effects (read-u16))
+                                     (options (read-u16))
+                                     (job (read-u16))
+                                     (remaining (read-u8v 38)))))
             (#x1d9 (player-update-2 ((u8v (read-u8v 51)))))
             (#x091 (player-warp ((u8v (read-u8v 20)))))
 
