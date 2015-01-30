@@ -351,6 +351,9 @@
 (define (party-info len name remaining)
   'cont)
 
+(define (party-invited u8v)
+  'cont)
+
 (define (party-update-hp u8v)
   'cont)
 
@@ -583,6 +586,7 @@
             (#x0fb (party-info ((len (read-u16))
                                 (name (read-str 24))
                                 (remaining (read-u8v (- len 28))))))
+            (#x0fe (party-invited ((u8v (read-u8v 28)))))
             (#x107 (party-update-coords ((u8v (read-u8v 8)))))
             (#x106 (party-update-hp ((u8v (read-u8v 8)))))
             (#x0e5 (trade-request ((u8v (read-u8v 24)))))
