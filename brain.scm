@@ -107,6 +107,8 @@
   '("Eat an apple, they're good for you."
     "If I do it for you, then I have to do it for everybody."
     "Oh, go drink a potion or something."
+    "Whoops! I lost my spellbook."
+    "no mana"
     ))
 
 (define *whoami*
