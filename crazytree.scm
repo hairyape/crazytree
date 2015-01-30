@@ -256,6 +256,9 @@
 (define (player-equipment len remaining)
   'cont)
 
+(define (player-guild-party-info rest)
+  'cont)
+
 (define (player-guild-party-info u8v)
   'cont)
 
@@ -514,6 +517,7 @@
             (#x0aa (player-equip ((u8v (read-u8v 5)))))
             (#x0a4 (player-equipment ((len (read-u16))
                                       (remaining (read-u8v (- len 4))))))
+            (#x195 (player-guild-party-info ((u8v (read-u8v 100)))))
             (#x1ee (player-inventory ((len (read-u16))
                                       (remaining (read-u8v (- len 4))))))
             (#x1c8 (player-inventory-use ((u8v (read-u8v 11)))))
