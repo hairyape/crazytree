@@ -152,7 +152,7 @@
 
 (define (one-of str list)
   (find (lambda (x)
-	  (string=? str x))
+	  (string-scan str x))
 	list))
 
 (define (say-something speech speaker)
@@ -172,12 +172,12 @@
 	 (assoc speaker *special-drops*))
 	(format (cdr (assoc speaker *special-drops*)) speaker)
 	(react speaker *dropping*)))
-   ((string=? speech "die tree")
+   ((string-scan speech "die tree")
     (react speaker *die*))
    ((one-of speech
 	    '("*pokes tree*" "*poke tree*"))
     "*tickles*")
-   ((string=? speech "*waters tree*")
+   ((string-scan speech "*waters tree*")
     "ewwwww")
    ((and (string-scan speech "tell me a joke")
 	 (string-scan speech "tree"))
@@ -195,6 +195,6 @@
    ((and (maybe) (rxmatch #/appy (.*) to all/ speech))
     (let ((match (rxmatch #/appy (.*) to all/ speech)))
       (format "Happy ~a to ~a!" (rxmatch-substring match 1) speaker)))
-   ((string=? speech "*burns tree*") (format "*curses ~a and dies*" speaker))
-   ((string=? speech "*bites tree*") "hahaha... good one!")
+   ((string-scan speech "*burns tree*") (format "*curses ~a and dies*" speaker))
+   ((string-scan speech "*bites tree*") "hahaha... good one!")
    ))
