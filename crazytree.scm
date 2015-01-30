@@ -69,7 +69,6 @@
                       (args (cadr (cadr handler))))
                   `((,key) (let* ,args
                              (let ((result (,func ,@(map car args))))
-                               (log "Execute ~a (~x)" ',func key)
                                (if (eq? result 'cont)
                                       (loop (,read-key))
                                       result))))))
