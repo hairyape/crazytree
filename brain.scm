@@ -157,6 +157,15 @@
 
 (define (say-something speech speaker)
   (cond
+   ((and (string-scan speech "tell me a joke")
+	 (string-scan speech "tree"))
+    (tell-joke))
+   ((and (string-scan speech "heal me")
+	 (string-scan speech "tree"))
+    (react speaker *healing*))
+   ((and (string-scan speech "tree")
+	 (string-scan speech "what are you"))
+    (react speaker *whoami*))
    ((one-of speech
 	    '("hi tree" "hi tree!" "hello tree" "hello tree!"
 	      "hey tree" "tree?"))
@@ -181,15 +190,6 @@
     "*tickles*")
    ((string-scan speech "*waters tree*")
     "ewwwww")
-   ((and (string-scan speech "tell me a joke")
-	 (string-scan speech "tree"))
-    (tell-joke))
-   ((and (string-scan speech "heal me")
-	 (string-scan speech "tree"))
-    (react speaker *healing*))
-   ((and (string-scan speech "tree")
-	 (string-scan speech "what are you"))
-    (react speaker *whoami*))
    ((and (string=? speaker "MMH$")
 	 (string-scan speech "Your MMH$ is now OPEN for Business")
 	 (maybe))
