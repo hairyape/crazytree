@@ -220,11 +220,14 @@
 (define late-id 0)
 (define late-msg "")
 
+(define (cleanup-message msg)
+  ($ string-downcase $ regexp-replace-all #/##./ msg ""))
+
 (define (being-chat len id msg)
   (log "~a> ~a" (hash-table-get being id id) msg)
   (if (hash-table-exists? being id)
       (let* ((sender (hash-table-get being id))
-             (reply (say-something (string-downcase msg) sender)))
+             (reply (say-something (cleanup-message msg) sender)))
         (if (string? reply)
             (chat-message reply)))
       (begin
