@@ -213,5 +213,8 @@
     (let ((match (rxmatch #/appy (.*) to all/ speech)))
       (format "Happy ~a to ~a!" (rxmatch-substring match 1) speaker)))
    ((string-scan speech "*burns tree*") (format "*curses ~a and dies*" speaker))
+   ((and (string-scan speech "*cuts")
+	 (string-scan speech "tree"))
+    (format "*curses ~a and dies*" speaker))
    ((string-scan speech "*bites tree*") "hahaha... good one!")
    ))
