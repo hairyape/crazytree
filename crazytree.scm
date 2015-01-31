@@ -226,12 +226,9 @@
   (log "~a> ~a" (being-name id) msg)
   (if (hash-table-exists? being id)
       (let* ((sender (hash-table-get being id))
-             (speech msg)
-             (reply (say-something speech sender))
-             (no-idea-reply (no-idea speech sender)))
-        (cond
-         ((string? reply) (chat-message reply))
-         ((string? no-idea-reply)) (chat-message no-idea-reply)))
+             (reply (say-something msg sender)))
+        (if (string? reply)
+	    (chat-message reply)))
       (begin
         (set! late-id id)
         (set! late-msg msg)

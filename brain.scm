@@ -1,5 +1,5 @@
 (define-module brain
-  (export say-something no-idea))
+  (export say-something))
 
 (select-module brain)
 (use srfi-27)
@@ -239,7 +239,9 @@
      $ string-downcase msg))
 
 (define (say-something speech speaker)
-  (*say-something (cleanup-message speech) speaker))
-
-(define (no-idea speech speaker)
-  (*no-idea (cleanup-message speech) speaker))
+  (let* ((speech (cleanup-message speech))
+	 (reply (*say-something speech speaker))
+	 (no-idea-reply (*no-idea speech speaker)))
+    (cond
+     ((string? reply) reply)
+     ((string? no-idea-reply) no-idea-reply))))
