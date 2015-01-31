@@ -222,20 +222,11 @@
 (define late-id 0)
 (define late-msg "")
 
-(define (cleanup-message msg)
-  ;; reorder for chaining with $
-  (define (re regex subst string)
-    (regexp-replace-all regex string subst ))
-  ($ re "crazytree" "tree"
-     $ re #/##./ ""
-     $ re "crazy tree" "tree"
-     $ string-downcase msg))
-
 (define (being-chat len id msg)
   (log "~a> ~a" (being-name id) msg)
   (if (hash-table-exists? being id)
       (let* ((sender (hash-table-get being id))
-             (speech (cleanup-message msg))
+             (speech msg)
              (reply (say-something speech sender))
              (no-idea-reply (no-idea speech sender)))
         (cond

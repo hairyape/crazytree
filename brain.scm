@@ -3,6 +3,7 @@
 
 (select-module brain)
 (use srfi-27)
+(use srfi-13)
 
 (define *greetings*
   '("Hi ~a!"
@@ -180,7 +181,7 @@
 	  (string-scan str x))
 	list))
 
-(define (say-something speech speaker)
+(define (*say-something speech speaker)
   (cond
    ((and (string-scan speech "tell me a joke")
 	 (string-scan speech "tree"))
@@ -224,6 +225,21 @@
    ((string-scan speech "*bites tree*") "hahaha... good one!")
    ))
 
-(define (no-idea speech speaker)
+(define (*no-idea speech speaker)
   (if (maybe (string-scan speech "tree"))
       (react speaker *no-idea*)))
+
+(define (cleanup-message msg)
+  ;; reorder for chaining with $
+  (define (re regex subst string)
+    (regexp-replace-all regex string subst ))
+  ($ re "crazytree" "tree"
+     $ re #/##./ ""
+     $ re "crazy tree" "tree"
+     $ string-downcase msg))
+
+(define (say-something speech speaker)
+  (*say-something (cleanup-message speech) speaker))
+
+(define (no-idea speech speaker)
+  (*no-idea (cleanup-message speech) speaker))
