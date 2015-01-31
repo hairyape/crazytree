@@ -187,11 +187,12 @@
 
 ;;; actual hash table update is done when we get being-name-response
 (define (add-being id job)
-  (if (or (<= job 25)
-          (and (>= job 4001)
-               (<= job 4049)))
-      (log "adding being ~a job ~a" id job)
+  (if (and (< id 110000000)
+           (or (<= job 25)
+               (and (>= job 4001)
+                    (<= job 4049))))
       (unless (hash-table-exists? being id)
+        (log "adding being ~a job ~a" id job)
         (write-u16 #x94)
         (write-u32 id)
         (flush))))
