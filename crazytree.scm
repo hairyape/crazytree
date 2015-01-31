@@ -238,8 +238,10 @@
   (hash-table-put! being id name)
   'cont)
 
-(define (being-remove id rest)
-  (delete-being id)
+(define (being-remove id dead-flag)
+  (log "ID ~a remove ~a" id dead-flag)
+  (unless (= dead-flag 1)
+    (delete-being id))
   'cont)
 
 (define (being-resurrect u8v)
@@ -532,7 +534,7 @@
             (#x095 (being-name-response ((id (read-u32))
                                          (name (read-str 24)))))
             (#x080 (being-remove ((id (read-u32))
-                                  (rest (read-u8v 1)))))
+                                  (dead-flag (read-u8)))))
             (#x148 (being-resurrect ((u8v (read-u8v 6)))))
             (#x19b (being-self-effect ((u8v (read-u8v 8)))))
             (#x07c (being-spawn ((u8v (read-u8v 39)))))
