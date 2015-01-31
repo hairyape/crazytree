@@ -141,6 +141,16 @@
     "Why was the tree executed? For treeson."
     ))
 
+(define *crazytree*
+  '("what?"
+    "what??"
+    "what?"
+    "hmm..."
+    "hmm..."
+    "*yawns*"
+    ))
+
+
 (define (rarely) (= (random-integer 10) 0))
 (define (maybe) (= (random-integer 2) 0))
 
@@ -160,6 +170,8 @@
 
 (define (say-something speech speaker)
   (cond
+   ((and (maybe) (string-scan speech "CrazyTree"))
+    (react speaker *crazytree*))
    ((and (string-scan speech "tell me a joke")
 	 (string-scan speech "tree"))
     (tell-joke))
