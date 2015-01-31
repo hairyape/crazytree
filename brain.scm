@@ -181,8 +181,7 @@
 	 (string-scan speech "what are you"))
     (react speaker *whoami*))
    ((one-of speech
-	    '("hi tree" "hi tree!" "hello tree" "hello tree!"
-	      "hey tree" "tree?"))
+	    '("hi tree" "hello tree" "hey tree" "heya tree"))
     (if (and (maybe) (string=? "mahouking" speaker))
 	"hi noob"
 	(react speaker *greetings*)))
