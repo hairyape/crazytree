@@ -545,8 +545,12 @@
   (select-char slot)
   (char-map-info))
 
+(define (read-and-filter)
+  (let ((code (read-u16)))
+    code))
+
 (define (run-client)
-  (dispatch read-u16
+  (dispatch read-and-filter
             (#x08a (being-action ((u8v (read-u8v 27)))))
             (#x09c (being-change-direction ((u8v (read-u8v 7)))))
             (#x0c3 (being-change-looks ((u8v (read-u8v 6)))))
