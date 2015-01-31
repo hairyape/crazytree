@@ -201,9 +201,11 @@
         (flush))))
 
 (define (delete-being id)
-  (if (hash-table-exists? being id)
-      (log "delete being ~a (~a)" (hash-table-get being id) id))
+  (log "delete being ~a" (being-name id))
   (hash-table-delete! being id))
+
+(define (being-name id)
+  (hash-table-get being id id))
 
 (define (being-action u8v)
   'cont)
@@ -224,7 +226,7 @@
   ($ string-downcase $ regexp-replace-all #/##./ msg ""))
 
 (define (being-chat len id msg)
-  (log "~a> ~a" (hash-table-get being id id) msg)
+  (log "~a> ~a" (being-name id) msg)
   (if (hash-table-exists? being id)
       (let* ((sender (hash-table-get being id))
              (reply (say-something (cleanup-message msg) sender)))
@@ -237,10 +239,11 @@
   'cont)
 
 (define (being-emotion id emote)
-  (log "Emote ~a> ~a" (hash-table-get being id id) (emote-text emote))
+  (log "~a> (emote) ~a" (being-name id) (emote-text emote))
   'cont)
 
 (define (being-move id speed stun-mode status-effects options job rest)
+  (log "being-move id ~a" (being-name id))
   (add-being id job)
   'cont)
 
@@ -257,7 +260,7 @@
   'cont)
 
 (define (being-remove id dead-flag)
-  (log "ID ~a remove ~a" id dead-flag)
+  (log "ID ~a remove ~a" (being-name id) dead-flag)
   (unless (= dead-flag 1)
     (delete-being id))
   'cont)
@@ -275,6 +278,7 @@
   'cont)
 
 (define (being-visible id speed stun-mode status-effects options job rest)
+  (log "being ~a is visible" (being-name id))
   (add-being id job)
   'cont)
 
