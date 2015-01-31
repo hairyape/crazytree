@@ -151,9 +151,20 @@
     "I don't know what you are talking about"
     ))
 
+(define-syntax rarely
+  (syntax-rules ()
+    ((_ expr ...)
+     (and (= (random-integer 10) 0) expr ...)))) ; 10%
 
-(define (rarely) (= (random-integer 10) 0))
-(define (maybe) (= (random-integer 2) 0))
+(define-syntax maybe
+  (syntax-rules ()
+    ((_ expr ...)
+     (and (= (random-integer 2) 0) expr ...))))	; 50%
+
+(define-syntax likely
+  (syntax-rules ()
+    ((_ expr ...)
+     (and (not (= (random-integer 3) 0)) expr ...)))) ; 75%
 
 (define (tell-joke)
   (list-ref *jokes* (random-integer (length *jokes*))))
@@ -182,18 +193,15 @@
     (react speaker *whoami*))
    ((one-of speech
 	    '("hi tree" "hello tree" "hey tree" "heya tree"))
-    (if (and (maybe) (string=? "mahouking" speaker))
+    (if (maybe (string=? "mahouking" speaker))
 	"hi noob"
 	(react speaker *greetings*)))
-   ((and (maybe)
-	 (one-of speech '("hi all" "hello everyone" "hello all"
-			  "hello everybody" "hi everyone")))
+   ((maybe (one-of speech '("hi all" "hello everyone" "hello all"
+			    "hello everybody" "hi everyone")))
     (react speaker *greetings*))
    ((one-of speech
 	    '("*kicks tree*" "*kick tree*" "shake tree" "shakes tree"))
-    (if (and
-	 (rarely)
-	 (assoc speaker *special-drops*))
+    (if (rarely (assoc speaker *special-drops*))
 	(format (cdr (assoc speaker *special-drops*)) speaker)
 	(react speaker *dropping*)))
    ((string-scan speech "die tree")
@@ -203,11 +211,10 @@
     "*tickles*")
    ((string-scan speech "*waters tree*")
     "ewwwww")
-   ((and (string=? speaker "MMH$")
-	 (string-scan speech "Your MMH$ is now OPEN for Business")
-	 (maybe))
+   ((maybe (string=? speaker "MMH$")
+	   (string-scan speech "Your MMH$ is now OPEN for Business"))
     "*wishes MMH$ a good business day*")
-   ((and (maybe) (rxmatch #/appy (.*) to all/ speech))
+   ((maybe (rxmatch #/appy (.*) to all/ speech))
     (let ((match (rxmatch #/appy (.*) to all/ speech)))
       (format "Happy ~a to ~a!" (rxmatch-substring match 1) speaker)))
    ((string-scan speech "*burns tree*") (format "*curses ~a and dies*" speaker))
@@ -218,6 +225,5 @@
    ))
 
 (define (no-idea speech speaker)
-  (if (and (maybe)
-           (string-scan speech "tree"))
+  (if (maybe (string-scan speech "tree"))
       (react speaker *no-idea*)))
