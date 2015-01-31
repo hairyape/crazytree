@@ -333,7 +333,7 @@
   'cont)
 
 (define (player-update-1 id speed stun-mode status-effects options job remaining)
-  (add-being id job)
+  (if (>= job 1000) (add-being id job))
   'cont)
 
 (define (player-update-2 u8v)
