@@ -6,8 +6,10 @@
 (use gauche.uvector)
 (use srfi-60)
 (use srfi-98)
-(use brain)
 (use scheme.char)
+
+(use brain)
+(use repl)
 
 (define-record-type world #t #t
   address port name (online-users) maintenance new)
@@ -631,6 +633,7 @@
         (password (get-environment-variable "CRAZYPASS")))
     (unless (string? password)
       (raise "$CRAZYPASS not defined"))
+    (run-repl-server)
     (let* ((login-data (connect "server.themanaworld.org" 6901
                                 (login-handler username password)))
            (first-world (car (login-data-world login-data)))
