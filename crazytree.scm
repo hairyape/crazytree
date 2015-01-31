@@ -223,7 +223,10 @@
 (define late-msg "")
 
 (define (cleanup-message msg)
-  ($ string-downcase $ regexp-replace-all #/##./ msg ""))
+  (let* ((s1 (string-downcase msg))
+         (s2 (regexp-replace-all "crazytree" s1 "tree"))
+         (s3 (regexp-replace-all #/##./ s2 "")))
+    s3))
 
 (define (being-chat len id msg)
   (log "~a> ~a" (being-name id) msg)
