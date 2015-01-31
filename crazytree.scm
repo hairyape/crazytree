@@ -315,7 +315,8 @@
   'cont)
 
 (define (player-move id speed stun-mode status-effects options job rest)
-  (if (>= job 1000) (add-being id job))
+  (log "player-move id ~a job ~a" (being-name id) job)
+  (add-being id job)
   'cont)
 
 (define (player-move-to-attack u8v)
@@ -355,11 +356,13 @@
   'cont)
 
 (define (player-update-1 id speed stun-mode status-effects options job remaining)
-  (if (>= job 1000) (add-being id job))
+  (log "player-update-1 id ~a job ~a" (being-name id) job)
+  (add-being id job)
   'cont)
 
 (define (player-update-2 id speed stun-mode status-effects options job rest)
-  (if (>= job 1000) (add-being id job))
+  (log "player-update-2 id ~a job ~a" (being-name id) job)
+  (add-being id job)
   'cont)
 
 ;;; Misc
