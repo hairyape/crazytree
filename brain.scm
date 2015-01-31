@@ -1,5 +1,5 @@
 (define-module brain
-  (export say-something))
+  (export say-something no-idea))
 
 (select-module brain)
 (use srfi-27)
@@ -141,13 +141,14 @@
     "Why was the tree executed? For treeson."
     ))
 
-(define *crazytree*
+(define *no-idea*
   '("what?"
     "what??"
     "what?"
     "hmm..."
     "hmm..."
     "*yawns*"
+    "I don't know what you are talking about"
     ))
 
 
@@ -170,8 +171,6 @@
 
 (define (say-something speech speaker)
   (cond
-   ((and (maybe) (string-scan speech "CrazyTree"))
-    (react speaker *crazytree*))
    ((and (string-scan speech "tell me a joke")
 	 (string-scan speech "tree"))
     (tell-joke))
@@ -218,3 +217,8 @@
     (format "*curses ~a and dies*" speaker))
    ((string-scan speech "*bites tree*") "hahaha... good one!")
    ))
+
+(define (no-idea speech speaker)
+  (if (and (maybe)
+           (string-scan speech "tree"))
+      (react speaker *no-idea*)))
