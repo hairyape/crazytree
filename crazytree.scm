@@ -7,6 +7,7 @@
 (use srfi-60)
 (use srfi-98)
 (use brain)
+(use scheme.char)
 
 (define-record-type world #t #t
   address port name (online-users) maintenance new)
@@ -221,7 +222,7 @@
   (log "~a> ~a" (hash-table-get being id id) msg)
   (if (hash-table-exists? being id)
       (let* ((sender (hash-table-get being id))
-             (reply (say-something msg sender)))
+             (reply (say-something (string-downcase msg) sender)))
         (if (string? reply)
             (chat-message reply)))
       (begin
