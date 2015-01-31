@@ -336,7 +336,8 @@
   (if (>= job 1000) (add-being id job))
   'cont)
 
-(define (player-update-2 u8v)
+(define (player-update-2 id speed stun-mode status-effects options job rest)
+  (if (>= job 1000) (add-being id job))
   'cont)
 
 ;;; Misc
@@ -586,7 +587,13 @@
                                      (options (read-u16))
                                      (job (read-u16))
                                      (remaining (read-u8v 38)))))
-            (#x1d9 (player-update-2 ((u8v (read-u8v 51)))))
+            (#x1d9 (player-update-2 ((id (read-u32))
+                                     (speed (read-u16))
+                                     (stun-mode (read-u16))
+                                     (status-effects (read-u16))
+                                     (options (read-u16))
+                                     (job (read-u16))
+                                     (rest (read-u8v 37)))))
             (#x091 (player-warp ((u8v (read-u8v 20)))))
 
             (#x09a (gm-chat ((len (read-u16))
