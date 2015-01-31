@@ -22,4 +22,7 @@
 (dotimes (30) (print (say-something "*cuts tree" "speaker")))
 (dotimes (10) (print (say-something "Your MMH$ is now OPEN for Business" "MMH$")))
 (dotimes (30) (print (say-something "tree" "speaker")))
-(dotimes (30) (print (say-something "nothing" "speaker")))
+(dotimes (30) (print (say-something "CrazyTree" "speaker")))
+(dotimes (30) (print (say-something "hi tree" "Chung")))
+(dotimes (30) (print (say-something "hi tree" "mahouking")))
+(dotimes (5) (print (say-something "nothing" "speaker")))

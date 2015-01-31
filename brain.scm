@@ -167,6 +167,19 @@
     ((_ expr ...)
      (and (not (= (random-integer 3) 0)) expr ...)))) ; 75%
 
+(define (nick-name speaker)
+  (let ((nick (cond
+	       ((string=? speaker "Chung")
+		(maybe (random-from-list '("young" "noob"))))
+	       ((string=? speaker "mahouking")
+		(likely "noob")))))
+    (if (string? nick)
+	nick
+	speaker)))
+
+(define (random-from-list list)
+  (list-ref list (random-integer (length list))))
+
 (define (tell-joke)
   (list-ref *jokes* (random-integer (length *jokes*))))
 
@@ -194,9 +207,7 @@
     (react speaker *whoami*))
    ((one-of speech
 	    '("hi tree" "hello tree" "hey tree" "heya tree"))
-    (if (maybe (string=? "mahouking" speaker))
-	"hi noob"
-	(react speaker *greetings*)))
+    (react speaker *greetings*))
    ((maybe (one-of speech '("hi all" "hello everyone" "hello all"
 			    "hello everybody" "hi everyone")))
     (react speaker *greetings*))
@@ -240,6 +251,7 @@
 
 (define (say-something speech speaker)
   (let* ((speech (cleanup-message speech))
+	 (speaker (nick-name speaker))
 	 (reply (*say-something speech speaker))
 	 (no-idea-reply (*no-idea speech speaker)))
     (cond
