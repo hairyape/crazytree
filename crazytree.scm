@@ -214,13 +214,20 @@
 (define (being-change-looks-2 u8v)
   'cont)
 
+(define late-id 0)
+(define late-msg "")
+
 (define (being-chat len id msg)
   (log "~a> ~a" (hash-table-get being id id) msg)
   (if (hash-table-exists? being id)
       (let* ((sender (hash-table-get being id))
              (reply (say-something msg sender)))
         (if (string? reply)
-            (chat-message reply))))
+            (chat-message reply)))
+      (begin
+        (set! late-id id)
+        (set! late-msg msg)
+        (add-being id 1)))
   'cont)
 
 (define (being-emotion id emote)
@@ -237,6 +244,10 @@
 (define (being-name-response id name)
   (log "ID ~a => name ~a" id name)
   (hash-table-put! being id name)
+  (if (= id late-id)
+      (begin
+        (being-chat 0 late-id late-msg)
+        (set! late-id 0)))
   'cont)
 
 (define (being-remove id dead-flag)
