@@ -116,6 +116,7 @@
     "An exiled GM."
     "I'm not telling you!"
     "I'm a bot! I'll be level 99 one day! Mwahahahaaha!!!111!"
+    "Somebody said I'm a Chinese copy of Confused Tree"
     ))
 
 (define *jokes*
