@@ -148,8 +148,20 @@
     "what?"
     "hmm..."
     "hmm..."
+    "huh?"
     "*yawns*"
+    "Wait a minute.."
+    "What are you talking about?"
+    "Who are you?"
+    "What about me?"
     "I don't know what you are talking about"
+    "Excuse me?"
+    "very interesting"
+    "really?"
+    "go on..."
+    "*feels a disturbance in the force*"
+    "*senses a disturbance in the force*"
+    "*humming*"
     ))
 
 (define *blocked* #f)
