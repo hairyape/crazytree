@@ -26,3 +26,7 @@
 (dotimes (30) (print (say-something "hi tree" "Chung")))
 (dotimes (30) (print (say-something "hi tree" "mahouking")))
 (dotimes (5) (print (say-something "nothing" "speaker")))
+(dotimes (30) (print (say-something "shakes tree" "Shainen")))
+(dotimes (30) (print (say-something "shakes tree" "ShaiN2")))
+(dotimes (30) (print (say-something "shake tree" "Silent Dawn")))
+(dotimes (30) (print (say-something "shakes tree" "veryape")))

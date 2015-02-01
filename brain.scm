@@ -230,7 +230,7 @@
     (react speaker *greetings*))
    ((one-of speech
             '("kicks tree" "kick tree" "shake tree" "shakes tree"))
-    (if (rarely (assoc speaker *special-drops*))
+    (if (likely (assoc speaker *special-drops*))
         (format (cdr (assoc speaker *special-drops*)) speaker)
         (react speaker *dropping*)))
    ((string-scan speech "die tree")
