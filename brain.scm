@@ -181,10 +181,10 @@
   (list-ref list (random-integer (length list))))
 
 (define (tell-joke)
-  (list-ref *jokes* (random-integer (length *jokes*))))
+  (random-from-list *jokes*))
 
-(define (react speaker *list*)
-  (let ((fmt (list-ref *list* (random-integer (length *list*)))))
+(define (react speaker list)
+  (let ((fmt (random-from-list list)))
     (if (string-scan fmt "~a")
 	(format fmt speaker)
 	fmt)))
