@@ -363,6 +363,9 @@
   'cont)
 
 ;;; Misc
+(define (connection-problem code)
+  (log "connection problem code ~a" code))
+
 (define (gm-chat len msg)
   (log "GM> ~a"  msg)
   'cont)
@@ -634,6 +637,7 @@
                                      (rest (read-u8v 37)))))
             (#x091 (player-warp ((u8v (read-u8v 20)))))
 
+            (#x081 (connection-problem ((code (read-u8)))))
             (#x09a (gm-chat ((len (read-u16))
                              (msg (read-str (- len 4))))))
             (#x09e (item-dropped ((u8v (read-u8v 15)))))
