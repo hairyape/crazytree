@@ -30,3 +30,4 @@
 (dotimes (30) (print (say-something "shakes tree" "ShaiN2")))
 (dotimes (30) (print (say-something "shake tree" "Silent Dawn")))
 (dotimes (30) (print (say-something "shakes tree" "veryape")))
+(dotimes (30) (print (say-something "burn tree" "veryape")))

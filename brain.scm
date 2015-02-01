@@ -142,6 +142,16 @@
     "Why was the tree executed? For treeson."
     ))
 
+(define *burning*
+  '("*curses ~a and dies %%c*"
+    "Help! I'm on fire!"
+    "Oh hot.. hot hot!"
+    "*is glowing*"
+    "*is flaming*"
+    "ehemm. where are firefighters? I need them now!"
+    "*is so hot!*"
+    ))
+
 (define *no-idea*
   '("what?"
     "what??"
@@ -246,8 +256,8 @@
    ((maybe (rxmatch #/appy (.*) to all/ speech))
     (let ((match (rxmatch #/appy (.*) to all/ speech)))
       (format "Happy ~a to ~a!" (rxmatch-substring match 1) speaker)))
-   ((string-scan speech "*burns tree*")
-    (format "*curses ~a and dies %%c*" speaker))
+   ((one-of speech '("burns tree" "burn tree"))
+    (react speaker *burning*))
    ((and (string-scan speech "*cuts")
          (string-scan speech "tree"))
     (format "*curses ~a and dies %%c*" speaker))
