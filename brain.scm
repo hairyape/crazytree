@@ -152,6 +152,8 @@
     "I don't know what you are talking about"
     ))
 
+(define *blocked* #f)
+
 (define-syntax rarely
   (syntax-rules ()
     ((_ expr ...)
@@ -208,7 +210,9 @@
     (react speaker *whoami*))
    ((one-of speech
 	    '("hi tree" "hello tree" "hey tree" "heya tree"))
-    (react speaker *greetings*))
+    (begin
+      (set! *blocked* #f)
+      (react speaker *greetings*)))
    ((maybe (one-of speech '("hi all" "hello everyone" "hello all"
 			    "hello everybody" "hi everyone" "hey all")))
     (react speaker *greetings*))
@@ -237,6 +241,10 @@
     (format "*curses ~a and dies*" speaker))
    ((string-scan speech "*bites tree*")
     "hahaha... good one!")
+   ((string-scan speech "shut up tree")
+    (begin
+      (set! *blocked* #t)
+      ":("))
    ))
 
 (define (*no-idea speech speaker)
@@ -255,8 +263,10 @@
 (define (say-something speech speaker)
   (let* ((speech (cleanup-message speech))
 	 (speaker (nick-name speaker))
+	 (was-blocked *blocked*)
 	 (reply (*say-something speech speaker))
 	 (no-idea-reply (*no-idea speech speaker)))
     (cond
+     ((and was-blocked *blocked*) #f)
      ((string? reply) reply)
      ((string? no-idea-reply) no-idea-reply))))
