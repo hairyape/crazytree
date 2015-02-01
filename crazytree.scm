@@ -388,6 +388,18 @@
 (define (party-update-coords u8v)
   'cont)
 
+(define (skill-cast-cancel rest)
+  'cont)
+
+(define (skill-casting rest)
+  'cont)
+
+(define (skill-damage rest)
+  'cont)
+
+(define (skill-no-damage rest)
+  'cont)
+
 (define (trade-request u8v)
   (write-u16 #xe7)
   (write-u8 4)                          ; reject
@@ -633,6 +645,10 @@
             (#x0fe (party-invited ((u8v (read-u8v 28)))))
             (#x107 (party-update-coords ((u8v (read-u8v 8)))))
             (#x106 (party-update-hp ((u8v (read-u8v 8)))))
+            (#x1b9 (skill-cast-cancel ((rest (read-u8v 4)))))
+            (#x13e (skill-casting ((rest (read-u8v 22)))))
+            (#x1de (skill-damage ((rest (read-u8v 31)))))
+            (#x11a (skill-no-damage ((rest (read-u8v 13)))))
             (#x0e5 (trade-request ((u8v (read-u8v 24)))))
             (#x097 (whisper ((len (read-u16))
                              (nick (read-str 24))
