@@ -256,7 +256,7 @@
    ((string-scan speech "shut up tree")
     (begin
       (set! *blocked* #t)
-      "%%S"))
+      "*goes hide in a corner %%S*"))
    ))
 
 (define (*no-idea speech speaker)
