@@ -228,7 +228,7 @@
       (let* ((sender (hash-table-get being id))
              (reply (say-something msg sender)))
         (if (string? reply)
-	    (chat-message reply)))
+            (chat-message reply)))
       (begin
         (set! late-id id)
         (set! late-msg msg)
@@ -674,3 +674,7 @@
                                    (map-data-char-id map-data))
                (map-loaded)
                (run-client)))))
+
+;;; Local Variables:
+;;; indent-tabs-mode: nil
+;;; End:

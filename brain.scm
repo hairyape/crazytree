@@ -162,7 +162,7 @@
 (define-syntax maybe
   (syntax-rules ()
     ((_ expr ...)
-     (and (= (random-integer 2) 0) expr ...))))	; 50%
+     (and (= (random-integer 2) 0) expr ...)))) ; 50%
 
 (define-syntax likely
   (syntax-rules ()
@@ -171,13 +171,13 @@
 
 (define (nick-name speaker)
   (let ((nick (cond
-	       ((string=? speaker "Chung")
-		(maybe (random-from-list '("young" "noob"))))
-	       ((string=? speaker "mahouking")
-		(likely "noob")))))
+               ((string=? speaker "Chung")
+                (maybe (random-from-list '("young" "noob"))))
+               ((string=? speaker "mahouking")
+                (likely "noob")))))
     (if (string? nick)
-	nick
-	speaker)))
+        nick
+        speaker)))
 
 (define (random-from-list list)
   (list-ref list (random-integer (length list))))
@@ -188,48 +188,48 @@
 (define (react speaker list)
   (let ((fmt (random-from-list list)))
     (if (string-scan fmt "~a")
-	(format fmt speaker)
-	fmt)))
+        (format fmt speaker)
+        fmt)))
 
 (define (one-of str list)
   (find (lambda (x)
-	  (string-scan str x))
-	list))
+          (string-scan str x))
+        list))
 
 (define (*say-something speech speaker)
   (cond
    ((and (string-scan speech "tell me a joke")
-	 (string-scan speech "tree"))
+         (string-scan speech "tree"))
     (tell-joke))
    ((and (string-scan speech "heal me")
-	 (string-scan speech "tree"))
+         (string-scan speech "tree"))
     (react speaker *healing*))
    ((and (string-scan speech "tree")
-	 (or (string-scan speech "what are you")
-	     (string-scan speech "who are you")))
+         (or (string-scan speech "what are you")
+             (string-scan speech "who are you")))
     (react speaker *whoami*))
    ((one-of speech
-	    '("hi tree" "hello tree" "hey tree" "heya tree"))
+            '("hi tree" "hello tree" "hey tree" "heya tree"))
     (begin
       (set! *blocked* #f)
       (react speaker *greetings*)))
    ((maybe (one-of speech '("hi all" "hello everyone" "hello all"
-			    "hello everybody" "hi everyone" "hey all")))
+                            "hello everybody" "hi everyone" "hey all")))
     (react speaker *greetings*))
    ((one-of speech
-	    '("kicks tree" "kick tree" "shake tree" "shakes tree"))
+            '("kicks tree" "kick tree" "shake tree" "shakes tree"))
     (if (rarely (assoc speaker *special-drops*))
-	(format (cdr (assoc speaker *special-drops*)) speaker)
-	(react speaker *dropping*)))
+        (format (cdr (assoc speaker *special-drops*)) speaker)
+        (react speaker *dropping*)))
    ((string-scan speech "die tree")
     (react speaker *die*))
    ((one-of speech
-	    '("pokes tree" "poke tree"))
+            '("pokes tree" "poke tree"))
     "*tickles*")
    ((string-scan speech "waters tree")
     "ewwwww")
    ((maybe (string=? speaker "MMH$")
-	   (string-scan speech "your mmh$ is now open for business"))
+           (string-scan speech "your mmh$ is now open for business"))
     "*wishes MMH$ a good business day*")
    ((maybe (rxmatch #/appy (.*) to all/ speech))
     (let ((match (rxmatch #/appy (.*) to all/ speech)))
@@ -237,7 +237,7 @@
    ((string-scan speech "*burns tree*")
     (format "*curses ~a and dies*" speaker))
    ((and (string-scan speech "*cuts")
-	 (string-scan speech "tree"))
+         (string-scan speech "tree"))
     (format "*curses ~a and dies*" speaker))
    ((string-scan speech "*bites tree*")
     "hahaha... good one!")
@@ -262,11 +262,15 @@
 
 (define (say-something speech speaker)
   (let* ((speech (cleanup-message speech))
-	 (speaker (nick-name speaker))
-	 (was-blocked *blocked*)
-	 (reply (*say-something speech speaker))
-	 (no-idea-reply (*no-idea speech speaker)))
+         (speaker (nick-name speaker))
+         (was-blocked *blocked*)
+         (reply (*say-something speech speaker))
+         (no-idea-reply (*no-idea speech speaker)))
     (cond
      ((and was-blocked *blocked*) #f)
      ((string? reply) reply)
      ((string? no-idea-reply) no-idea-reply))))
+
+;;; Local Variables:
+;;; indent-tabs-mode: nil
+;;; End:
