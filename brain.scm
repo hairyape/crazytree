@@ -54,6 +54,8 @@
     "*drops an iten on ~a's head*"
     "*drops a GM on ~a"
     "*drops a penguin on ~a's head*"
+    "*drops a whale on ~a's head*"
+    "*drops an elephant on ~a's head*"
     "*drops a piano on ~a's head*"
     "*drops a piece of moon rock on ~a's head*"
     "*drops a pin on ~a's head*"
@@ -80,8 +82,8 @@
   '(("ShaiN2" . "*drops a nurse on ~a*")
     ("Shainen" . "*drops a nurse on ~a*")
     ("Silent Dawn" . "*drops a box of chocolate on ~a*")
-    ("veryape" . "*drops a chest of rares on ~a")
-    ("veryapeGM" . "*drops a chest of rares on ~a")
+    ("veryape" . "*drops a chest of rares on ~a*")
+    ("veryapeGM" . "*drops a chest of rares on ~a*")
     ))
 
 (define *die*
@@ -237,12 +239,13 @@
              (string-scan speech "who are you")))
     (react speaker *whoami*))
    ((one-of speech
-            '("hi tree" "hello tree" "hey tree" "heya tree"))
+            '("hi tree" "hello tree" "hey tree" "heya tree" "hiya tree"))
     (begin
       (set! *blocked* #f)
       (react speaker *greetings*)))
    ((maybe (one-of speech '("hi all" "hello everyone" "hello all"
-                            "hello everybody" "hi everyone" "hey all")))
+                            "hello everybody" "hi everyone" "hey all"
+                            "hiya everyone")))
     (react speaker *greetings*))
    ((one-of speech
             '("kicks tree" "kick tree" "shake tree" "shakes tree"))
