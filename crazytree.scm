@@ -484,7 +484,7 @@
 
 (define (unknown-request key)
   (let ((len (request-length key)))
-    (log "unknown request ~a length ~a/~a" key len)
+    (log "unknown request ~a length ~a" key len)
     (if (> len 2)
         (read-u8v (- len 2)))
     'cont))
