@@ -413,7 +413,7 @@
   'cont)
 
 (define (whisper len nick msg)
-  (log "~a> ~a" nick msg)
+  (log "Whisper ~a> ~a" nick msg)
   'cont)
 
 (define (whisper-response u8v)
