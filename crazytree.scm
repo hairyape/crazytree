@@ -4,6 +4,7 @@
 (use gauche.parameter)
 (use gauche.record)
 (use gauche.uvector)
+(use gauche.threads)
 (use srfi-60)
 (use srfi-98)
 (use scheme.char)
@@ -224,13 +225,15 @@
 
 (define late-id 0)
 (define late-msg "")
+(define *chat-ok* #t)
 
 (define (being-chat len id msg)
   (log "~a> ~a" (being-name id) msg)
   (if (hash-table-exists? being id)
       (let* ((sender (hash-table-get being id))
              (reply (say-something msg sender)))
-        (if (string? reply)
+        (if (and *chat-ok*
+                 (string? reply))
             (chat-message reply)))
       (begin
         (set! late-id id)
@@ -292,8 +295,23 @@
 (define (player-attack-range u8v)
   'cont)
 
+(define (stop-chatting secs)
+  (chat-message "Oops.. too chatty.. shutting up..")
+  (set! *chat-ok* #f)
+  (thread-start!
+   (make-thread
+    (lambda ()
+      (sys-sleep secs)
+      (log "Allow to chat again")
+      (set! *chat-ok* #t)))))
+
 (define (player-chat len msg)
   (log "> ~a" msg)
+  ;; Full string is
+  ;; WARNING: You are about to be automatically banned for spam!
+  ;; WARNING: Please slow down, do not repeat, and do not SHOUT!
+  (if (string-scan msg "automatically banned")
+      (stop-chatting 15))
   'cont)
 
 (define (player-equip u8v)
