@@ -206,6 +206,8 @@
 
 (define (delete-being id)
   (log "delete being ~a" (being-name id))
+  (if (hash-table-exists? being id)
+      (disengage (being-name id)))
   (hash-table-delete! being id))
 
 (define (being-name id)

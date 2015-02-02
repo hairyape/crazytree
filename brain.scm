@@ -1,9 +1,10 @@
 (define-module brain
-  (export say-something))
+  (export say-something disengage))
 
 (select-module brain)
 (use srfi-27)
 (use srfi-13)
+(use eliza)
 
 (define *greetings*
   '("Hi ~a!"
@@ -184,6 +185,8 @@
 
 (define *blocked* #f)
 
+(define *eliza-mode* (make-hash-table 'equal?))
+
 (define-syntax rarely
   (syntax-rules ()
     ((_ expr ...)
@@ -299,8 +302,21 @@
          (no-idea-reply (*no-idea speech nick)))
     (cond
      ((and was-blocked *blocked*) #f)
+     ((and (string-scan speech "talk to me")
+           (string-scan speech "tree")
+           (not (hash-table-exists? *eliza-mode* speaker)))
+      (hash-table-put! *eliza-mode* speaker #t)
+      "*puts eliza hat on, continue..*")
+     ((hash-table-exists? *eliza-mode* speaker)
+      (let ((response (tell-eliza speech)))
+        (if (string-scan response "*is back")
+            (hash-table-delete! *eliza-mode* speaker))
+        response))
      ((string? reply) reply)
      ((string? no-idea-reply) no-idea-reply))))
+
+(define (disengage name)
+  (hash-table-delete! *eliza-mode* name))
 
 ;;; Local Variables:
 ;;; indent-tabs-mode: nil

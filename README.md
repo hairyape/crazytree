@@ -28,6 +28,11 @@ in brain.scm for more information.
 * "kick(s)", "shake(s)", "poke(s)", "burns", "waters", "die", "cuts",
   "bites", "shut up"
 
+When the string "talk to me tree" (or "tree talk to me"), Eliza mode
+is turned on for the chatter. From now on until the chatter says
+"bye" or "shut up", all chat messages from the chatter is considered
+part of the conversation with tree. An Eliza script is used instead.
+
 When "tree" is mentioned but no other keywords are found, a response
 may be generated 50% of time. See *no-idea function in brain.scm
 
