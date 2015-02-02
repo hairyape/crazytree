@@ -181,12 +181,14 @@
 
 (define (chat-message msg)
   (let* ((str (format "CrazyTree : ~a" msg))
-         (len (+ (string-length str) 1)))
-    (log "<~a" str)
+         (len (+ (string-size str) 1)))
     (sys-sleep 1)
+    (log "<~a" str)
     (write-u16 #x8c)
     (write-u16 (+ len 4))
-    (write-str str len)
+    ;; can't use write-str because of utf-8
+    (write-uvector (string->u8vector str))
+    (write-u8 0)
     (flush)))
 
 ;;; Being handling
