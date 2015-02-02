@@ -293,10 +293,10 @@
 
 (define (say-something speech speaker)
   (let* ((speech (cleanup-message speech))
-         (speaker (nick-name speaker))
+         (nick (nick-name speaker))
          (was-blocked *blocked*)
-         (reply (*say-something speech speaker))
-         (no-idea-reply (*no-idea speech speaker)))
+         (reply (*say-something speech nick))
+         (no-idea-reply (*no-idea speech nick)))
     (cond
      ((and was-blocked *blocked*) #f)
      ((string? reply) reply)
