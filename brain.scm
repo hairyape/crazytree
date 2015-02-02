@@ -34,6 +34,7 @@
     "Welcome back ~a"
     "Welcome back ~a"
     "~a is back!!"
+    "Hello and welcome to the Aperture Science computer-aided enrichment center."
     ))
 
 (define *dropping*
@@ -53,6 +54,7 @@
     "*drops an anvil on ~a's head*"
     "*drops an apple on ~a's head*"
     "*drops an iten on ~a's head*"
+    "*drops a magic eightball on ~a's head*"
     "*drops a GM on ~a"
     "*drops a penguin on ~a's head*"
     "*drops a whale on ~a's head*"
@@ -127,6 +129,13 @@
     "I'm not telling you!"
     "I'm a bot! I'll be level 99 one day! Mwahahahaaha!!!111!"
     "Somebody said I'm a Chinese copy of Confused Tree"
+    "I am your evil twin."
+    "I don't remember anything after I woke up! What happened to me?"
+    "I don't know. Why am I here??"
+    "Who are you?"
+    "On the 8th day, God was bored and said 'There will be bots'. So here I am."
+    "♪ I'm your hell, I'm your dream, I'm nothing in between ♪♪"
+    "♪♪ Aperture Science. We do what we must, because.. we can ♪"
     ))
 
 (define *jokes*
@@ -165,6 +174,7 @@
   '("what?"
     "what??"
     "what?"
+    "whatever"
     "hmm..."
     "hmm..."
     "huh?"
@@ -178,10 +188,28 @@
     "very interesting"
     "really?"
     "go on..."
+    "*scratches its leafy head*"
     "*feels a disturbance in the force*"
     "*senses a disturbance in the force*"
     "*humming*"
+    "I'm bored.."
     ))
+
+(define *pain*
+  '("Ouch.."
+    "Ouchy.."
+    "Argh.."
+    "Eckk..."
+    "*howls*"
+    "*screams*"
+    "*groans*"
+    "*cries*"
+    "*faints*"
+    ))
+
+(define *hurt-actions*
+  '("eat" "shoot" "pluck" "torture" "slap" "poison"
+    "break" "stab" "kill" "throw"))
 
 (define *blocked* #f)
 
@@ -260,7 +288,8 @@
    ((one-of speech
             '("pokes tree" "poke tree"))
     "*tickles*")
-   ((string-scan speech "waters tree")
+   ((one-of speech '("water tree" "*pee" "waters tree"
+                     "licks tree" "lick tree"))
     "ewwwww")
    ((maybe (string=? speaker "MMH$")
            (string-scan speech "your mmh$ is now open for business"))
@@ -275,6 +304,16 @@
     (format "*curses ~a and dies %%c*" speaker))
    ((string-scan speech "*bites tree*")
     "hahaha... good one!")
+   ((string-scan speech "*loves tree")
+    "♪♪ and IIII.. will alwayyyys loooovvve youuuuu ♪♪")
+   ((and (string-scan speech "tree")
+         (one-of speech *hurt-actions*))
+    (random-from-list *pain*))
+   ((string-scan speech "bad tree")
+    (random-from-list '("I'm not bad! You are bad!"
+                        "OK I'm bad"
+                        "I'm just a littttle bad"
+                        "Whisper suggestions to me, maybe I can improve")))
    ((string-scan speech "shut up tree")
     (begin
       (set! *blocked* #t)
