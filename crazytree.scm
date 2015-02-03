@@ -552,6 +552,10 @@
   (make-login-data session1 account session2 old-ip
                    last-login gender worlds))
 
+(define (login-error code date)
+  (raise (format "Login error: ~a"
+                 (login-error-text code date))))
+
 ;;; char server handling
 (define (connect-char-server account session1 session2)
   (write-u16 #x65)
@@ -639,8 +643,7 @@
                                            (make-list nr-worlds))))))
             (#x6a
              (login-error ((code (read-u8))
-                           (date (read-str 20))
-                           (text (login-error-text code date)))))))
+                           (date (read-str 20)))))))
 
 (define (char-handler login-data slot)
   (connect-char-server (login-data-account login-data)
