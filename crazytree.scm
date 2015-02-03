@@ -315,7 +315,8 @@
   ;; Full string is
   ;; WARNING: You are about to be automatically banned for spam!
   ;; WARNING: Please slow down, do not repeat, and do not SHOUT!
-  (if (string-scan msg "automatically banned")
+  (if (and (string-scan msg "automatically banned")
+           *chat-ok*)
       (stop-chatting 15))
   'cont)
 
