@@ -47,3 +47,16 @@
 (dotimes (3) (print (say "*stabs tree*" "speaker")))
 (dotimes (3) (print (say "*throws something at tree*" "speaker")))
 (dotimes (5) (print (say "bad tree" "speaker")))
+
+;;; internal macros, maybe, rarely, likely
+(select-module brain)
+
+(define-syntax test-prob
+  (syntax-rules ()
+    ((_ macro max)
+     (let ((count 0))
+       (dotimes (max) (if (macro) (inc! count)))
+       (print (format "~a => ~a" 'macro (/ (inexact count) max)))))))
+(test-prob rarely 1000)
+(test-prob maybe 1000)
+(test-prob likely 1000)
