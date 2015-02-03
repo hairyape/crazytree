@@ -652,6 +652,7 @@
 
 (define (read-and-filter)
   (let ((code (read-u16)))
+    (display #\. (standard-output-port))
     code))
 
 (define (run-client)
@@ -764,6 +765,7 @@
     (unless (string? password)
       (raise "$CRAZYPASS not defined"))
     (run-repl-server)
+    (set! (port-buffering (standard-output-port) ) :none)
     (let* ((login-data (connect "server.themanaworld.org" 6901
                                 (login-handler username password)))
            (first-world (car (login-data-world login-data)))
