@@ -59,7 +59,8 @@
         (parameterize ((default-endian 'little-endian)
                        (current-input-port in)
                        (current-output-port out))
-          (begin . body)))))))
+          (begin . body)))
+      :input-buffering :full))))
 
 ;;; generate a loop that calls read-key, then dispatch it to the
 ;;; proper handler based on the value. Each handler is in form
