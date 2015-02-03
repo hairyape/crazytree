@@ -349,7 +349,10 @@
      ((hash-table-exists? *eliza-mode* speaker)
       (let ((response (tell-eliza speech)))
         (if (string-scan response "*is back")
-            (hash-table-delete! *eliza-mode* speaker))
+            (begin
+              (hash-table-delete! *eliza-mode* speaker)
+              ;; "shut up" could set this to #t in *say-something
+              (set! *blocked* #f)))
         response))
      ((string? reply) reply)
      ((string? no-idea-reply) no-idea-reply))))
