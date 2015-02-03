@@ -186,6 +186,8 @@ typing "bye" to the Eliza prompt.
     (Possibly they are ?*y))
    ((bye)
     (*is back to being crazy*))
+   ((shut up tree)
+    (*is back to being crazy*))
    ((shut up)
     (*is back to being crazy*))
    ((?*x)
