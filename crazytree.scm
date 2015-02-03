@@ -158,7 +158,7 @@
     ((128) "Crying")
     (else (format "~a" emote))))
 
-(define (login-error-text code)
+(define (login-error-text code date)
   (case code
     ((0) "Unregistered ID.")
     ((1) "Wrong password.")
@@ -640,7 +640,7 @@
             (#x6a
              (login-error ((code (read-u8))
                            (date (read-str 20))
-                           (text (login-error-text code)))))))
+                           (text (login-error-text code date)))))))
 
 (define (char-handler login-data slot)
   (connect-char-server (login-data-account login-data)
