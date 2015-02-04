@@ -27,8 +27,7 @@
                (standard-error-port))
       (guard
        (e (else
-           (print e)
-           (flush)
+           (display (format "Error: ~a\n" e) (standard-error-port))
            (process-kill p)
            (process-wait p)))
        (health-check in))
