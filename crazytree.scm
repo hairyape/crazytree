@@ -276,7 +276,18 @@
 (define (being-resurrect u8v)
   'cont)
 
-(define (being-self-effect u8v)
+(define (being-self-effect id effect)
+  (unless (string? (being-name id))
+    (add-being id 0))  ; fixme: not being able to get CrazyTree's name
+  (if (and *chat-ok*
+           (string? (being-name id)))
+      (cond
+       ((and (eqv? effect 3)            ; heal
+             (string=? (being-name id) "CrazyTree"))
+        (chat-message "Thank you for healing!"))
+       ((<= effect 1)                   ; job or exp level up
+        (chat-message (format "Congratulations, ~a!"
+                              (being-name id))))))
   'cont)
 
 (define (being-spawn u8v)
@@ -683,7 +694,8 @@
             (#x080 (being-remove ((id (read-u32))
                                   (dead-flag (read-u8)))))
             (#x148 (being-resurrect ((u8v (read-u8v 6)))))
-            (#x19b (being-self-effect ((u8v (read-u8v 8)))))
+            (#x19b (being-self-effect ((id (read-u32))
+                                       (effect (read-u32)))))
             (#x07c (being-spawn ((u8v (read-u8v 39)))))
             (#x196 (being-status-change ((u8v (read-u8v 7)))))
             (#x078 (being-visible ((id (read-u32))
