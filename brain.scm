@@ -4,6 +4,7 @@
 (select-module brain)
 (use srfi-27)
 (use srfi-13)
+(use srfi-19)
 (use eliza)
 
 (define *greetings*
@@ -215,6 +216,10 @@
 
 (define *eliza-mode* (make-hash-table 'equal?))
 
+(define *start-time* (current-time))
+(define *chat-count* 0)
+(define *ignore-count* 0)
+
 (define-syntax rarely
   (syntax-rules ()
     ((_ expr ...)
@@ -299,6 +304,16 @@
                         "OK I'm bad"
                         "I'm just a littttle bad"
                         "Whisper suggestions to me, maybe I can improve")))
+   ((string-scan speech "how old are you")
+    (let* ((time (time->seconds
+                  (time-difference (current-time) *start-time*)))
+           (day-in-secs (* 24 60 60))
+           (trunc (lambda (x frac)  ; do I really need to do this manuall??
+                    (/ (round (* x frac)) frac)))
+           (days (/ time day-in-secs)))
+      (format "uptime ~a days" (trunc days 100))))
+   ((string-scan speech "how chatty are you")
+    (format "answered ~a times, ignored ~a times" *chat-count* *ignore-count*))
    ((string-scan speech "shut up")
     (begin
       (set! *blocked* #t)
@@ -320,7 +335,8 @@
 
 (define (*no-idea speech speaker)
   (if (maybe (string-scan speech "tree"))
-      (react speaker *no-idea*)))
+      (react speaker *no-idea*)
+      (inc! *ignore-count*)))
 
 (define (*say-something speech speaker)
   (define (string-or-f str)
@@ -362,7 +378,9 @@
               ;; "shut up" could set this to #t in *say-something
               (set! *blocked* #f)))
         response))
-     ((string? reply) reply))))
+     ((string? reply)
+      (inc! *chat-count*)
+      reply))))
 
 (define (disengage name)
   (hash-table-delete! *eliza-mode* name))

@@ -48,6 +48,8 @@
 (dotimes (3) (print (say "*throws something at tree*" "speaker")))
 (dotimes (5) (print (say "bad tree" "speaker")))
 (dotimes (10) (print (say "tree does not recognize this" "speaker")))
+(print (say "how old are you tree" "me"))
+(print (say "how chatty are you tree" "me"))
 
 ;;; internal macros, maybe, rarely, likely
 (select-module brain)

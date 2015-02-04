@@ -51,5 +51,8 @@ to:
 When tree is told to "shut up", no responses are generated until the
 "hi tree" (and similar patterns) are received.
 
+Special phrases "how old are you" and "how chatty are you" give
+uptime and some basic stats
+
 When responding, nick name transform may be applied. See nick-name
 function in brain.scm
