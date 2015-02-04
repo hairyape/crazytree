@@ -191,9 +191,12 @@
     "go on..."
     "*scratches its leafy head*"
     "*feels a disturbance in the force*"
+    "%%j"
     "*senses a disturbance in the force*"
     "*humming*"
     "I'm bored.."
+    "%%U"
+    "%%["
     ))
 
 (define *pain*
@@ -206,11 +209,13 @@
     "*groans*"
     "*cries*"
     "*faints*"
+    "%%k"
+    "Why.. What did I do to you? %%i"
     ))
 
 (define *hurt-actions*
   '("eat" "shoot" "pluck" "torture" "slap" "poison"
-    "break" "stab" "kill" "throw"))
+    "break" "stab" "throw"))
 
 (define *blocked* #f)
 (define *emote-ok* #t)
@@ -282,24 +287,39 @@
     (if (likely (assoc speaker *special-drops*))
         (format (cdr (assoc speaker *special-drops*)) speaker)
         (react speaker *dropping*)))
-   ((string-scan speech "die tree")
+   ((one-of speech '("die tree" "*nukes tree" "*nuke tree"
+                     "*kill tree" "*kills tree"))
     (react speaker *die*))
    ((one-of speech
             '("pokes tree" "poke tree"))
     "*tickles*")
    ((one-of speech '("water tree" "*pee" "waters tree"
                      "licks tree" "lick tree"))
-    "ewwwww")
+    "ewwwww %%^")
    ((one-of speech '("burns tree" "burn tree"))
     (react speaker *burning*))
    ((string-scan speech "*cuts")
     (format "*curses ~a and dies %%c*" speaker))
    ((string-scan speech "*bites tree*")
     "hahaha... good one!")
-   ((string-scan speech "*loves tree")
-    "♪♪ and IIII.. will alwayyyys loooovvve youuuuu ♪♪")
+   ((one-of speech '("*loves tree" "*hugs tree"))
+    (random-from-list
+     '("♪♪ and IIII.. will alwayyyys loooovvve youuuuu ♪♪ %%]"
+       "♪♪ nothing's gonna change my love for you, you oughta know by now how much I love you.. ♪ %%]"
+       "♪ ..and then I go and spoil it all, by saying something stupid like: \"I love you.\" ♪"
+       "♪ ..won't you find a place for me? somewhere in your heart... ♪♪"
+       "thank you"
+       "♪♪ ..I can't love another when my heart is somewhere far away.. ♪"
+       "%%]")))
+   ((one-of speech '("*hates tree" "*hate tree"))
+    (react speaker '("right back at you!"
+                     "ok..."
+                     "*pats ~a, let it go..*"
+                     "hu hu hu .. ~a hates me")))
    ((one-of speech *hurt-actions*)
     (random-from-list *pain*))
+   ((string-scan speech "bye")
+    (format "*waves goodbye to ~a in tears, come back soon!*" speaker))
    ((string-scan speech "bad tree")
     (random-from-list '("I'm not bad! You are bad!"
                         "OK I'm bad"
@@ -376,7 +396,8 @@
            (string-scan speech "tree")
            (not (hash-table-exists? *eliza-mode* speaker)))
       (hash-table-put! *eliza-mode* speaker #t)
-      "*puts eliza hat on, continue..*")
+      (format "*puts eliza hat on, say \"bye\" to stop, continue ~a..*"
+              nick))
      ((hash-table-exists? *eliza-mode* speaker)
       (let ((response (tell-eliza speech)))
         (if (string-scan response "*is back")

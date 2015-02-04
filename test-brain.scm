@@ -35,7 +35,7 @@
 (dotimes (30) (print (say "shake tree" "Silent Dawn")))
 (dotimes (30) (print (say "shakes tree" "veryape")))
 (dotimes (30) (print (say "burn tree" "veryape")))
-(dotimes (1) (print (say "*loves tree*" "speaker")))
+(dotimes (10) (print (say "*loves tree*" "speaker")))
 (dotimes (3) (print (say "*eats tree*" "speaker")))
 (dotimes (3) (print (say "*shoots tree*" "speaker")))
 (dotimes (3) (print (say "*plucks tree*" "speaker")))
