@@ -228,7 +228,7 @@
 (define-syntax likely
   (syntax-rules ()
     ((_ expr ...)
-     (and (not (= (random-integer 3) 0)) expr ...)))) ; 75%
+     (and (not (= (random-integer 4) 0)) expr ...)))) ; 75%
 
 (define (nick-name speaker)
   (let ((nick (cond
