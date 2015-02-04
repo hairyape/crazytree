@@ -113,7 +113,8 @@
           (shr/and 16)
           (shr/and 24)))
 
-(define (emote-text emote)
+;;; return number if emote is not recognized
+(define (emote->string emote)
   (case emote
     ((1) "Disgust")
     ((2) "Surprise")
@@ -156,7 +157,7 @@
     ((126) "Troll")
     ((127) "Metal")
     ((128) "Crying")
-    (else (format "~a" emote))))
+    (else emote)))
 
 (define (login-error-text code date)
   (case code
@@ -191,6 +192,12 @@
     (write-uvector (string->u8vector str))
     (write-u8 0)
     (flush)))
+
+(define (show-emote id)
+  (log "<(~a)" (emote->string id))
+  (write-u16 #xbf)
+  (write-u8 id)
+  (flush))
 
 ;;; Being handling
 (define being (make-hash-table 'eqv?))
@@ -247,7 +254,13 @@
   'cont)
 
 (define (being-emotion id emote)
-  (log "~a> (emote) ~a" (being-name id) (emote-text emote))
+  (let ((emote-string (emote->string emote)))
+    (if (string? emote-string)
+        (log "~a> (~a)" (being-name id) emote-string)))
+  (let ((new-emote (make-face emote)))
+    (if (and (number? new-emote)
+             (string? (emote->string new-emote)))
+        (show-emote new-emote)))
   'cont)
 
 (define (being-move id speed stun-mode status-effects options job rest)

@@ -1,5 +1,5 @@
 (define-module brain
-  (export say-something disengage))
+  (export say-something make-face disengage))
 
 (select-module brain)
 (use srfi-27)
@@ -213,6 +213,7 @@
     "break" "stab" "kill" "throw"))
 
 (define *blocked* #f)
+(define *emote-ok* #t)
 
 (define *eliza-mode* (make-hash-table 'equal?))
 
@@ -304,6 +305,12 @@
                         "OK I'm bad"
                         "I'm just a littttle bad"
                         "Whisper suggestions to me, maybe I can improve")))
+   ((string-scan speech "stop making face")
+    (set! *emote-ok* #f)
+    "%%S")
+   ((string-scan speech "show your face")
+    (set! *emote-ok* #t)
+    "%%_")
    ((string-scan speech "how old are you")
     (let* ((time (time->seconds
                   (time-difference (current-time) *start-time*)))
@@ -384,6 +391,19 @@
 
 (define (disengage name)
   (hash-table-delete! *eliza-mode* name))
+
+(define (*make-face emote)
+  (case emote
+    ((2) 2)
+    ((3) (random-from-list '(3 103)))
+    ((5) (random-from-list '(5 7)))
+    ((7) (random-from-list '(5 7)))
+    ((101) 101)
+    ((110) 4)))
+
+(define (make-face emote)
+  (if *emote-ok*
+      (*make-face emote)))
 
 ;;; Local Variables:
 ;;; indent-tabs-mode: nil
