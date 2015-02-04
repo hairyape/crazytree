@@ -47,6 +47,7 @@
 (dotimes (3) (print (say "*stabs tree*" "speaker")))
 (dotimes (3) (print (say "*throws something at tree*" "speaker")))
 (dotimes (5) (print (say "bad tree" "speaker")))
+(dotimes (10) (print (say "tree does not recognize this" "speaker")))
 
 ;;; internal macros, maybe, rarely, likely
 (select-module brain)

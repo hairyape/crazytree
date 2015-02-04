@@ -257,27 +257,20 @@
           (string-scan str x))
         list))
 
-(define (*say-something speech speaker)
+(define (*say-tree speech speaker)
   (cond
-   ((and (string-scan speech "tell me a joke")
-         (string-scan speech "tree"))
+   ((one-of speech '("tell me a joke" "tell a joke"))
     (tell-joke))
-   ((and (string-scan speech "heal me")
-         (string-scan speech "tree"))
+   ((string-scan speech "heal me")
     (react speaker *healing*))
-   ((and (string-scan speech "tree")
-         (or (string-scan speech "what are you")
-             (string-scan speech "who are you")))
+   ((or (string-scan speech "what are you")
+        (string-scan speech "who are you"))
     (react speaker *whoami*))
    ((one-of speech
             '("hi tree" "hello tree" "hey tree" "heya tree" "hiya tree"))
     (begin
       (set! *blocked* #f)
       (react speaker *greetings*)))
-   ((maybe (one-of speech '("hi all" "hello everyone" "hello all"
-                            "hello everybody" "hi everyone" "hey all"
-                            "hiya everyone")))
-    (react speaker *greetings*))
    ((one-of speech
             '("kicks tree" "kick tree" "shake tree" "shakes tree"))
     (if (likely (assoc speaker *special-drops*))
@@ -291,38 +284,54 @@
    ((one-of speech '("water tree" "*pee" "waters tree"
                      "licks tree" "lick tree"))
     "ewwwww")
-   ((maybe (string=? speaker "MMH$")
-           (string-scan speech "your mmh$ is now open for business"))
-    "*wishes MMH$ a good business day*")
-   ((maybe (rxmatch #/appy (.*) to all/ speech))
-    (let ((match (rxmatch #/appy (.*) to all/ speech)))
-      (format "Happy ~a to ~a!" (rxmatch-substring match 1) speaker)))
    ((one-of speech '("burns tree" "burn tree"))
     (react speaker *burning*))
-   ((and (string-scan speech "*cuts")
-         (string-scan speech "tree"))
+   ((string-scan speech "*cuts")
     (format "*curses ~a and dies %%c*" speaker))
    ((string-scan speech "*bites tree*")
     "hahaha... good one!")
    ((string-scan speech "*loves tree")
     "♪♪ and IIII.. will alwayyyys loooovvve youuuuu ♪♪")
-   ((and (string-scan speech "tree")
-         (one-of speech *hurt-actions*))
+   ((one-of speech *hurt-actions*)
     (random-from-list *pain*))
    ((string-scan speech "bad tree")
     (random-from-list '("I'm not bad! You are bad!"
                         "OK I'm bad"
                         "I'm just a littttle bad"
                         "Whisper suggestions to me, maybe I can improve")))
-   ((string-scan speech "shut up tree")
+   ((string-scan speech "shut up")
     (begin
       (set! *blocked* #t)
       "*goes hide in a corner %%S*"))
    ))
 
+(define (*say-no-tree speech speaker)
+  (cond
+   ((maybe (one-of speech '("hi all" "hello everyone" "hello all"
+                            "hello everybody" "hi everyone" "hey all"
+                            "hiya everyone")))
+    (react speaker *greetings*))
+   ((maybe (string=? speaker "MMH$")
+           (string-scan speech "your mmh$ is now open for business"))
+    "*wishes MMH$ a good business day*")
+   ((maybe (rxmatch #/appy (.*) to all/ speech))
+    (let ((match (rxmatch #/appy (.*) to all/ speech)))
+      (format "Happy ~a to ~a!" (rxmatch-substring match 1) speaker)))))
+
 (define (*no-idea speech speaker)
   (if (maybe (string-scan speech "tree"))
       (react speaker *no-idea*)))
+
+(define (*say-something speech speaker)
+  (define (string-or-f str)
+    (if (string? str)
+        str
+        #f))
+  (or
+   (and (string-scan speech "tree")
+        (string-or-f (*say-tree speech speaker)))
+   (string-or-f (*say-no-tree speech speaker))
+   (string-or-f (*no-idea speech speaker))))
 
 (define (cleanup-message msg)
   ;; reorder for chaining with $
@@ -337,8 +346,7 @@
   (let* ((speech (cleanup-message speech))
          (nick (nick-name speaker))
          (was-blocked *blocked*)
-         (reply (*say-something speech nick))
-         (no-idea-reply (*no-idea speech nick)))
+         (reply (*say-something speech nick)))
     (cond
      ((and was-blocked *blocked*) #f)
      ((and (string-scan speech "talk to me")
@@ -354,8 +362,7 @@
               ;; "shut up" could set this to #t in *say-something
               (set! *blocked* #f)))
         response))
-     ((string? reply) reply)
-     ((string? no-idea-reply) no-idea-reply))))
+     ((string? reply) reply))))
 
 (define (disengage name)
   (hash-table-delete! *eliza-mode* name))
