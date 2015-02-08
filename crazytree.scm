@@ -23,6 +23,7 @@
 
 (define tmwa-version 0)
 (define tmwa-options 0)
+;(define *log-all* #f)
 
 (define-syntax expect-u16
   (syntax-rules ()
@@ -74,6 +75,7 @@
                       (func (caadr handler))
                       (args (cadr (cadr handler))))
                   `((,key) (let* ,args
+                             ; (if *log-all* (log "Executing ~a (~x) [~a]" ',func key (list . ,(map car args))))
                              (let ((result (,func ,@(map car args))))
                                (if (eq? result 'cont)
                                       (loop (,read-key))
