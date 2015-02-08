@@ -264,7 +264,6 @@
   'cont)
 
 (define (being-move id speed stun-mode status-effects options job rest)
-  (log "being-move id ~a" (being-name id))
   (add-being id job)
   'cont)
 
@@ -272,7 +271,6 @@
   'cont)
 
 (define (being-name-response id name)
-  (log "ID ~a => name ~a" id name)
   (hash-table-put! being id name)
   (if (= id late-id)
       (begin
@@ -281,7 +279,6 @@
   'cont)
 
 (define (being-remove id dead-flag)
-  (log "ID ~a remove ~a" (being-name id) dead-flag)
   (unless (= dead-flag 1)
     (delete-being id))
   'cont)
@@ -310,7 +307,6 @@
   'cont)
 
 (define (being-visible id speed stun-mode status-effects options job rest)
-  (log "being ~a is visible" (being-name id))
   (add-being id job)
   'cont)
 
@@ -363,7 +359,6 @@
   'cont)
 
 (define (player-move id speed stun-mode status-effects options job rest)
-  (log "player-move id ~a job ~a" (being-name id) job)
   (add-being id job)
   'cont)
 
@@ -404,12 +399,10 @@
   'cont)
 
 (define (player-update-1 id speed stun-mode status-effects options job remaining)
-  (log "player-update-1 id ~a job ~a" (being-name id) job)
   (add-being id job)
   'cont)
 
 (define (player-update-2 id speed stun-mode status-effects options job rest)
-  (log "player-update-2 id ~a job ~a" (being-name id) job)
   (add-being id job)
   'cont)
 
