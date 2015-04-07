@@ -6,6 +6,7 @@
 (use srfi-13)
 (use srfi-19)
 (use eliza)
+(use config)
 
 (define *greetings*
   '("Hi ~a!"
@@ -141,7 +142,7 @@
 
 (define *jokes*
   '("How did the tree get drunk? On root beer."
-    "Do you think I'm crazy?"
+    "Do you think I'm lazy?"
     "I miss Confused Tree :("
     "I'm not telling you!"
     "*sighs*"
@@ -159,6 +160,12 @@
     "Why doesn't the tree need sudo? Because it has root."
     "Why was the cat afraid of the tree? Because of its bark."
     "Why was the tree executed? For treeson."
+    "How do trees get on the internet? They log in."
+    "Why did the pine tree get into trouble? Because it was being knotty."
+    "Did you hear the one about the oak tree? It's a corn-y one!"
+    "What do you call a blonde in a tree with a briefcase? Branch Manager."
+    "How is an apple like a lawyer? They both look good hanging from a tree."
+    "Why did the sheriff arrest the tree? Because its leaves rustled."
     ))
 
 (define *burning*
@@ -380,9 +387,9 @@
   ;; reorder for chaining with $
   (define (re regex subst string)
     (regexp-replace-all regex string subst ))
-  ($ re "crazytree" "tree"
+  ($ re charname "tree"
      $ re #/##./ ""
-     $ re "crazy tree" "tree"
+     $ re (format "~a tree" adjective) "tree"
      $ string-downcase msg))
 
 (define (say-something speech speaker)
