@@ -314,6 +314,11 @@
    ((one-of speech '("water tree" "*pee" "waters tree"
                      "licks tree" "lick tree"))
     "ewwwww %%^")
+   ((and (string-scan speech "answer")
+         (or  (string-scan speech "life")
+              (string-scan speech "everything")
+              (string-scan speech "universe")))
+    "42")
    ((one-of speech '("burns tree" "burn tree"))
     (react speaker *burning*))
    ((string-scan speech "*cuts")
@@ -431,8 +436,9 @@
 (define (*make-face emote)
   (case emote
     ((2) 2)
-    ((3) (random-from-list '(3 103)))
-    ((103) (random-from-list '(3 103)))
+    ((3) (random-from-list '(3 103 122)))
+    ((103) (random-from-list '(3 103 122)))
+    ((122) (random-from-list '(3 103 122)))
     ((5) (random-from-list '(5 7)))
     ((7) (random-from-list '(5 7)))
     ((101) 101)
