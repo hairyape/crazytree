@@ -171,7 +171,7 @@
     "What do you call a blonde in a tree with a briefcase? Branch Manager."
     "How is an apple like a lawyer? They both look good hanging from a tree."
     "Why did the sheriff arrest the tree? Because its leaves rustled."
-    "I'm to tired, ask someone else."
+    "I'm too tired, ask someone else."
     "If you are trying to get me to tell jokes you are barking up the wrong tree!"
     "You wodden think they were funny anyhow. Leaf me alone!"
     "What is brown and sticky? A stick."
