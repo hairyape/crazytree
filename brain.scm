@@ -432,6 +432,7 @@
   (case emote
     ((2) 2)
     ((3) (random-from-list '(3 103)))
+    ((103) (random-from-list '(3 103)))
     ((5) (random-from-list '(5 7)))
     ((7) (random-from-list '(5 7)))
     ((101) 101)
