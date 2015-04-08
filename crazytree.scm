@@ -297,7 +297,7 @@
       (cond
        ((and (eqv? effect 3)            ; heal
              (string=? (being-name id) charname))
-        (show-emote 3))
+        (being-emotion id 3))
        ((<= effect 1)                   ; job or exp level up
         (chat-message (format "Congratulations, ~a!"
                               (being-name id))))))

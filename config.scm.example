@@ -4,4 +4,7 @@
     (define charname "char")
     (define adjective "normal")
     (define server "server.themanaworld.org")
-    (define port 6901))
+    (define port 6901)
+
+    (define adjective "lazy") ; the adjective used to describe the tree
+    (define emote-limit 2)) ; the number of seconds to wait between emotes
