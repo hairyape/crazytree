@@ -6,4 +6,8 @@
     (define port 6901)
 
     (define adjective "lazy") ; the adjective used to describe the tree
-    (define emote-limit 2)) ; the number of seconds to wait between emotes
+    (define emote-limit 2) ; the number of seconds to wait between emotes
+
+    (define version "0.0.3") ; always increase this number before pushing
+    (define build "Vanilla") ; If you are running unmodified code put Vanilla, else put the branch name
+    (define source "https://github.com/USER/crazytree")) ; put here your git repo
