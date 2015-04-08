@@ -12,7 +12,7 @@ Gauche Scheme 0.9.4 or higher is required.
 Or you can run with supervisor.scm to restart crazytree when it
 hangs up or whatever reason
 
-    gosh supervisor.scm gosh -I. crazytree.scm 2>log
+    gosh superviser.scm gosh -I. crazytree.scm 2>log
 
 Account name "crazytree" is hard coded in main function in
 crazytree.scm. Character name "CrazyTree" is also hard coded in

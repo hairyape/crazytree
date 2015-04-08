@@ -81,6 +81,7 @@
     "*drops dead*"
     "*sighs*"
     "Leaf me alone."
+    "Stop it! I doesn't drop branches, try the Druid tree for once!"
     ))
 
 (define *special-drops*
@@ -89,6 +90,8 @@
     ("Silent Dawn" . "*drops a box of chocolate on ~a*")
     ("veryape" . "*drops a chest of rares on ~a*")
     ("veryapeGM" . "*drops a chest of rares on ~a*")
+    ("Ginaria" . "*drops a bluepar on ~a*")
+    ("mahouking" . "*drops 100l of oil and one feather on ~a*")
     ))
 
 (define *die*
@@ -138,12 +141,14 @@
     "On the 8th day, God was bored and said 'There will be bots'. So here I am."
     "♪ I'm your hell, I'm your dream, I'm nothing in between ♪♪"
     "♪♪ Aperture Science. We do what we must, because.. we can ♪"
+    "I'm just a reincarnation of a copy."
     ))
 
 (define *jokes*
   '("How did the tree get drunk? On root beer."
     "Do you think I'm lazy?"
     "I miss Confused Tree :("
+    "I miss CrazyTree :("
     "I'm not telling you!"
     "*sighs*"
     "If I do it for you, then I have to do it for everybody."
@@ -166,6 +171,10 @@
     "What do you call a blonde in a tree with a briefcase? Branch Manager."
     "How is an apple like a lawyer? They both look good hanging from a tree."
     "Why did the sheriff arrest the tree? Because its leaves rustled."
+    "I'm to tired, ask someone else."
+    "If you are trying to get me to tell jokes you are barking up the wrong tree!"
+    "You wodden think they were funny anyhow. Leaf me alone!"
+    "What is brown and sticky? A stick."
     ))
 
 (define *burning*

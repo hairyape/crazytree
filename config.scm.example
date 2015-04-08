@@ -2,7 +2,6 @@
     (define username "user")
     (define password "password")
     (define charname "char")
-    (define adjective "normal")
     (define server "server.themanaworld.org")
     (define port 6901)
 
