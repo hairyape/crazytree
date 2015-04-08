@@ -429,9 +429,18 @@
     ((101) 101)
     ((110) 4)))
 
+(define *lastface* (current-time))
+
 (define (make-face emote)
-  (if *emote-ok*
-      (*make-face emote)))
+;  (let time (time->seconds (time-difference (current-time) *lastface*)))
+  (if (<
+        (time->seconds (time-difference (current-time) *lastface*))
+        emote-limit)
+    ()
+    (if *emote-ok*
+      (begin
+          (set! *lastface* (current-time))
+          (*make-face emote)))))
 
 ;;; Local Variables:
 ;;; indent-tabs-mode: nil
