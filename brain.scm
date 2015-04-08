@@ -371,9 +371,6 @@
                             "hello everybody" "hi everyone" "hey all"
                             "hiya everyone")))
     (react speaker *greetings*))
-   ((maybe (string=? speaker "MMH$")
-           (string-scan speech "your mmh$ is now open for business"))
-    "*wishes MMH$ a good business day*")
    ((maybe (rxmatch #/appy (.*) to all/ speech))
     (let ((match (rxmatch #/appy (.*) to all/ speech)))
       (format "Happy ~a to ~a!" (rxmatch-substring match 1) speaker)))))
