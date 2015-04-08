@@ -91,7 +91,7 @@
     ("veryape" . "*drops a chest of rares on ~a*")
     ("veryapeGM" . "*drops a chest of rares on ~a*")
     ("Ginaria" . "*drops a bluepar on ~a*")
-    ("mahouking" . "*drops 100l of oil and one feather on ~a*")
+    ("mahouking" . "*drops 100 L of oil and one feather on ~a*")
     ))
 
 (define *die*
