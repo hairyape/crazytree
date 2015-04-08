@@ -9,7 +9,7 @@ Gauche Scheme 0.9.4 or higher is required.
     export CRAZYPASS=<password to the crazytree account>
     gosh -I. crazytree.scm >/dev/null 2>log
 
-Or you can run with supervisor.scm to restart crazytree when it
+Or you can run with superviser.scm to restart crazytree when it
 hangs up or whatever reason
 
     gosh superviser.scm gosh -I. crazytree.scm 2>log
