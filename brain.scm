@@ -396,9 +396,9 @@
   ;; reorder for chaining with $
   (define (re regex subst string)
     (regexp-replace-all regex string subst ))
-  ($ re charname "tree"
+  ($ re (string-downcase charname) "tree"
      $ re #/##./ ""
-     $ re (format "~a tree" adjective) "tree"
+     $ re (format "~a tree" (string-downcase adjective)) "tree"
      $ string-downcase msg))
 
 (define (say-something speech speaker)
