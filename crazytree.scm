@@ -9,6 +9,7 @@
 (use srfi-98)
 (use scheme.char)
 
+(use config)
 (use brain)
 (use repl)
 
@@ -184,7 +185,7 @@
     (else (format "Unknown error ~a" code))))
 
 (define (chat-message msg)
-  (let* ((str (format "CrazyTree : ~a" msg))
+  (let* ((str (format "~a : ~a" charname msg))
          (len (+ (string-size str) 1)))
     (sys-sleep 1)
     (log "<~a" str)
@@ -295,8 +296,8 @@
            (string? (being-name id)))
       (cond
        ((and (eqv? effect 3)            ; heal
-             (string=? (being-name id) "CrazyTree"))
-        (chat-message "Thank you for healing!"))
+             (string=? (being-name id) charname))
+        (show-emote 3))
        ((<= effect 1)                   ; job or exp level up
         (chat-message (format "Congratulations, ~a!"
                               (being-name id))))))
@@ -784,13 +785,13 @@
             (#x098 (whisper-response ((u8v (read-u8v 1)))))))
 
 (define (main args)
-  (let ((username "crazytree")
-        (password (get-environment-variable "CRAZYPASS")))
+  (let ((username username)
+        (password password))
     (unless (string? password)
       (raise "$CRAZYPASS not defined"))
     (run-repl-server)
     (set! (port-buffering (standard-output-port) ) :none)
-    (let* ((login-data (connect "server.themanaworld.org" 6901
+    (let* ((login-data (connect server port
                                 (login-handler username password)))
            (first-world (car (login-data-world login-data)))
            (char-slot 0)
