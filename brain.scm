@@ -37,6 +37,13 @@
     "Welcome back ~a"
     "~a is back!!"
     "Hello and welcome to the Aperture Science computer-aided enrichment center."
+    "Greetings ~a"
+    "Howdy ~a"
+    "Bonjour ~a"
+    "Buenas noches ~a"
+    "What's up ~a?"
+    "What's up ~a?"
+    "How are you ~a?"
     ))
 
 (define *dropping*
