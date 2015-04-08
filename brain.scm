@@ -57,7 +57,7 @@
     "*drops an apple on ~a's head*"
     "*drops an iten on ~a's head*"
     "*drops a magic eightball on ~a's head*"
-    "*drops a GM on ~a"
+    "*drops a GM on ~a*"
     "*drops a penguin on ~a's head*"
     "*drops a whale on ~a's head*"
     "*drops an elephant on ~a's head*"
@@ -69,12 +69,12 @@
     "*drops a wet mop on ~a's head*"
     "*drops some bass on ~a's head*"
     "*drops Voldemort on ~a's head*"
-    "*drops a sandworm on ~a"
-    "*drops a princess on ~a"
-    "*drops a prince on ~a"
-    "*drops an idea in ~a's head"
-    "*drops The Hitchhiker's Guide to the Galaxy on ~a's head"
-    "*drops Luvia on ~a"
+    "*drops a sandworm on ~a*"
+    "*drops a princess on ~a*"
+    "*drops a prince on ~a*"
+    "*drops an idea in ~a's head*"
+    "*drops The Hitchhiker's Guide to the Galaxy on ~a's head*"
+    "*drops Luvia on ~a*"
     "Hu hu hu.. ~a kicked me!"
     "Ouch.."
     "Ouchy.."
@@ -91,7 +91,7 @@
     ("veryape" . "*drops a chest of rares on ~a*")
     ("veryapeGM" . "*drops a chest of rares on ~a*")
     ("Ginaria" . "*drops a bluepar on ~a*")
-    ("mahouking" . "*drops 100l of oil and one feather on ~a*")
+    ("mahouking" . "*drops 100 L of oil and one feather on ~a*")
     ))
 
 (define *die*
@@ -171,7 +171,7 @@
     "What do you call a blonde in a tree with a briefcase? Branch Manager."
     "How is an apple like a lawyer? They both look good hanging from a tree."
     "Why did the sheriff arrest the tree? Because its leaves rustled."
-    "I'm to tired, ask someone else."
+    "I'm too tired, ask someone else."
     "If you are trying to get me to tell jokes you are barking up the wrong tree!"
     "You wodden think they were funny anyhow. Leaf me alone!"
     "What is brown and sticky? A stick."
@@ -262,7 +262,9 @@
                ((string=? speaker "Chung")
                 (maybe (random-from-list '("young" "noob"))))
                ((string=? speaker "mahouking")
-                (likely "noob")))))
+                (likely "noob"))
+               ((string=? speaker "veryapeGM")
+                (maybe "hairyape")))))
     (if (string? nick)
         nick
         speaker)))
@@ -312,6 +314,11 @@
    ((one-of speech '("water tree" "*pee" "waters tree"
                      "licks tree" "lick tree"))
     "ewwwww %%^")
+   ((and (string-scan speech "answer")
+         (or  (string-scan speech "life")
+              (string-scan speech "everything")
+              (string-scan speech "universe")))
+    "42")
    ((one-of speech '("burns tree" "burn tree"))
     (react speaker *burning*))
    ((string-scan speech "*cuts")
@@ -369,9 +376,6 @@
                             "hello everybody" "hi everyone" "hey all"
                             "hiya everyone")))
     (react speaker *greetings*))
-   ((maybe (string=? speaker "MMH$")
-           (string-scan speech "your mmh$ is now open for business"))
-    "*wishes MMH$ a good business day*")
    ((maybe (rxmatch #/appy (.*) to all/ speech))
     (let ((match (rxmatch #/appy (.*) to all/ speech)))
       (format "Happy ~a to ~a!" (rxmatch-substring match 1) speaker)))))
@@ -432,7 +436,9 @@
 (define (*make-face emote)
   (case emote
     ((2) 2)
-    ((3) (random-from-list '(3 103)))
+    ((3) (random-from-list '(3 103 122)))
+    ((103) (random-from-list '(3 103 122)))
+    ((122) (random-from-list '(3 103 122)))
     ((5) (random-from-list '(5 7)))
     ((7) (random-from-list '(5 7)))
     ((101) 101)
