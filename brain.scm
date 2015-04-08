@@ -262,7 +262,9 @@
                ((string=? speaker "Chung")
                 (maybe (random-from-list '("young" "noob"))))
                ((string=? speaker "mahouking")
-                (likely "noob")))))
+                (likely "noob"))
+               ((string=? speaker "veryapeGM")
+                (maybe "hairyape")))))
     (if (string? nick)
         nick
         speaker)))
