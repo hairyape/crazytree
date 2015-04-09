@@ -37,6 +37,13 @@
     "Welcome back ~a"
     "~a is back!!"
     "Hello and welcome to the Aperture Science computer-aided enrichment center."
+    "Greetings ~a"
+    "Howdy ~a"
+    "Bonjour ~a"
+    "Buenas noches ~a"
+    "What's up ~a?"
+    "What's up ~a?"
+    "How are you ~a?"
     ))
 
 (define *dropping*
@@ -354,7 +361,8 @@
    ((string-scan speech "show your face")
     (set! *emote-ok* #t)
     "%%_")
-   ((string-scan speech "how old are you")
+   ((or (string-scan speech "how old are you")
+        (string-scan speech "uptime"))
     (let* ((time (time->seconds
                   (time-difference (current-time) *start-time*)))
            (day-in-secs (* 24 60 60))
@@ -364,6 +372,9 @@
       (format "uptime ~a days" (trunc days 100))))
    ((string-scan speech "how chatty are you")
     (format "answered ~a times, ignored ~a times" *chat-count* *ignore-count*))
+   ((or (string-scan speech "version")
+        (string-scan speech "source"))
+    (format "I am on version ~a (~a). My source is at @@~a|~a@@" version build source source))
    ((string-scan speech "shut up")
     (begin
       (set! *blocked* #t)
