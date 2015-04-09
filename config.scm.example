@@ -1,13 +1,11 @@
 (define-module config (export-all)
-    (define username "user")
+    (extend defaults) ; inherit the default settings
+
+    (define username "lazytree")
     (define password "password")
-    (define charname "char")
-    (define server "server.themanaworld.org")
-    (define port 6901)
+    (define charname "LazyTree")
 
-    (define adjective "lazy") ; the adjective used to describe the tree
-    (define emote-limit 1) ; the number of seconds to wait between emotes
+    ; if you omit a setting (ie. char-slot) the default will be used
 
-    (define version "0.0.4") ; always increase this number before pushing
-    (define build "Vanilla") ; If you are running unmodified code put Vanilla, else put the branch name
-    (define source "https://github.com/USER/crazytree")) ; put here your git repo
+    (define blacklist '("mahou" "mahmoud")) ; nicknames containing these words are ignored
+    (define adjective "lazy")) ; the adjective used to describe the tree

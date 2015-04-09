@@ -6,18 +6,7 @@ A Confused Tree's replacement bot in the game The Mana World.
 
 Gauche Scheme 0.9.4 or higher is required.
 
-    export CRAZYPASS=<password to the crazytree account>
     gosh -I. crazytree.scm >/dev/null 2>log
-
-Or you can run with superviser.scm to restart crazytree when it
-hangs up or whatever reason
-
-    gosh superviser.scm gosh -I. crazytree.scm 2>log
-
-Account name "crazytree" is hard coded in main function in
-crazytree.scm. Character name "CrazyTree" is also hard coded in
-chat-message function. These needs to be updated if crazytree.scm is
-to be run with another account.
 
 # Functionality
 
