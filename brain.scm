@@ -341,6 +341,11 @@
        "thank you"
        "♪♪ ..I can't love another when my heart is somewhere far away.. ♪"
        "%%]")))
+   ((one-of speech '("dance tree" "tree dance"))
+    (random-from-list
+     '("I would but I am rooted to the ground."
+       "Have you ever seen a tree dance before?"
+       "hahaha... good one!")))
    ((one-of speech '("*hates tree" "*hate tree"))
     (react speaker '("right back at you!"
                      "ok..."
@@ -362,7 +367,8 @@
     (set! *emote-ok* #t)
     "%%_")
    ((or (string-scan speech "how old are you")
-        (string-scan speech "uptime"))
+        (and (string-scan speech "what")
+             (string-scan speech "uptime")))
     (let* ((time (time->seconds
                   (time-difference (current-time) *start-time*)))
            (day-in-secs (* 24 60 60))
@@ -372,8 +378,10 @@
       (format "uptime ~a days" (trunc days 100))))
    ((string-scan speech "how chatty are you")
     (format "answered ~a times, ignored ~a times" *chat-count* *ignore-count*))
-   ((or (string-scan speech "version")
-        (string-scan speech "source"))
+   ((or (and (string-scan speech "what")
+             (string-scan speech "version"))
+        (and (string-scan speech "what")
+             (string-scan speech "source")))
     (format "I am on version ~a (~a). My source is at @@~a|~a@@" version build source source))
    ((string-scan speech "shut up")
     (begin
