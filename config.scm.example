@@ -1,11 +1,12 @@
-(define-module config (export-all)
-    (extend defaults) ; inherit the default settings
+(define-module config (export-all))
+(select-module config)
+(extend defaults) ; inherit the default settings
 
-    (define username "lazytree")
-    (define password "password")
-    (define charname "LazyTree")
+(define username "lazytree")
+(define password "password")
+(define charname "LazyTree")
 
-    ; if you omit a setting (ie. char-slot) the default will be used
+; if you omit a setting (ie. char-slot) the default will be used
 
-    (define blacklist '("mahou" "mahmoud")) ; nicknames containing these words are ignored
-    (define adjective "lazy")) ; the adjective used to describe the tree
+(define blacklist '("mahou" "mahmoud")) ; nicknames containing these words are ignored
+(define adjective "lazy") ; the adjective used to describe the tree

@@ -6,7 +6,7 @@ A Confused Tree's replacement bot in the game The Mana World.
 
 Gauche Scheme 0.9.4 or higher is required.
 
-    gosh -I. crazytree.scm >/dev/null 2>log
+    gosh crazytree.scm >/dev/null 2>log
 
 # Functionality
 
