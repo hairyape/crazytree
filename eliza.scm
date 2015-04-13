@@ -185,7 +185,7 @@ typing "bye" to the Eliza prompt.
     (Did you think they might not be ?*y)
     (Possibly they are ?*y))
    ((bye)
-    (*is back to being lazy*))
+    (*is back to being lazy*)) ; fixme: find a way to make it use adjective from config
    ((shut up tree)
     (*is back to being lazy*))
    ((shut up)

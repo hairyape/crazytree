@@ -303,9 +303,10 @@
         (string-scan speech "who are you"))
     (react speaker *whoami*))
    ((one-of speech
-            '("hi tree" "hello tree" "hey tree" "heya tree" "hiya tree"))
+            '("hi tree" "hello tree" "hey tree" "heya tree" "hiya tree"
+              "tree hi" "tree hello" "tree hey" "tree heya" "tree hiya")) ; some players have bad English...
     (begin
-      (set! *blocked* #f)
+      (set! *blocked* #f) ; fixme: automatically unblock without the need for "hi tree" after X hours (set in config)
       (react speaker *greetings*)))
    ((one-of speech
             '("kicks tree" "kick tree" "shake tree" "shakes tree"))
@@ -318,13 +319,11 @@
    ((one-of speech
             '("pokes tree" "poke tree"))
     "*tickles*")
-   ((one-of speech '("water tree" "*pee" "waters tree"
-                     "licks tree" "lick tree"))
+   ((one-of speech '("water tree" "*pee" "*waters tree"
+                     "licks tree" "lick tree" "*does tree"))
     "ewwwww %%^")
    ((and (string-scan speech "answer")
-         (or  (string-scan speech "life")
-              (string-scan speech "everything")
-              (string-scan speech "universe")))
+         (one-of speech '("life" "universe" "everything")))
     "42")
    ((one-of speech '("burns tree" "burn tree"))
     (react speaker *burning*))
@@ -332,7 +331,7 @@
     (format "*curses ~a and dies %%c*" speaker))
    ((string-scan speech "*bites tree*")
     "hahaha... good one!")
-   ((one-of speech '("*loves tree" "*hugs tree"))
+   ((one-of speech '("*loves tree" "*hugs tree" "*kisses tree"))
     (random-from-list
      '("♪♪ and IIII.. will alwayyyys loooovvve youuuuu ♪♪ %%]"
        "♪♪ nothing's gonna change my love for you, you oughta know by now how much I love you.. ♪ %%]"
@@ -382,18 +381,22 @@
              (string-scan speech "version"))
         (and (string-scan speech "what")
              (string-scan speech "source")))
-    (format "I am on version ~a (~a). My source is at @@~a|~a@@" version build source source))
+    (format "I am running CrazyTree v~a (~a). My source is at @@~a|~a@@" version build source source))
    ((string-scan speech "shut up")
     (begin
       (set! *blocked* #t)
       "*goes hide in a corner %%S*"))
+   ((and (one-of speech '("what" "why"))
+         (string-scan speech "?"))
+    (maybe "42"))
    ))
 
 (define (*say-no-tree speech speaker)
   (cond
-   ((maybe (one-of speech '("hi all" "hello everyone" "hello all"
-                            "hello everybody" "hi everyone" "hey all"
-                            "hiya everyone")))
+   ((maybe (one-of speech '("hi all" "hello all" "hey all"
+                            "hello everybody" "hi everybody" "hey everybody"
+                            "hi everyone" "hiya everyone" "hello everyone"
+                            "hi friends" "hiya friends" "hello friends")))
     (react speaker *greetings*))
    ((maybe (rxmatch #/appy (.*) to all/ speech))
     (let ((match (rxmatch #/appy (.*) to all/ speech)))
@@ -424,30 +427,37 @@
      $ re (format "~a tree" (string-downcase adjective)) "tree"
      $ string-downcase msg))
 
+(define *last-reply* "Vagina")
+
 (define (say-something speech speaker)
-  (let* ((speech (cleanup-message speech))
-         (nick (nick-name speaker))
-         (was-blocked *blocked*)
-         (reply (*say-something speech nick)))
-    (cond
-     ((and was-blocked *blocked*) #f)
-     ((and (string-scan speech "talk to me")
-           (string-scan speech "tree")
-           (not (hash-table-exists? *eliza-mode* speaker)))
-      (hash-table-put! *eliza-mode* speaker #t)
-      (format "*puts eliza hat on, say \"bye\" to stop, continue ~a..*"
-              nick))
-     ((hash-table-exists? *eliza-mode* speaker)
-      (let ((response (tell-eliza speech)))
-        (if (string-scan response "*is back")
-            (begin
-              (hash-table-delete! *eliza-mode* speaker)
-              ;; "shut up" could set this to #t in *say-something
-              (set! *blocked* #f)))
-        response))
-     ((string? reply)
-      (inc! *chat-count*)
-      reply))))
+  (unless (one-of (string-downcase speaker) blacklist)
+      (let* ((speech (cleanup-message speech))
+             (nick (nick-name speaker))
+             (was-blocked *blocked*)
+             (reply (*say-something speech nick)))
+        (cond
+         ((and loop-protection
+               (equal? reply *last-reply*)) #f)
+         ((and was-blocked *blocked*) #f)
+         ((and (string-scan speech "talk to me")
+               (string-scan speech "tree")
+               (not (hash-table-exists? *eliza-mode* speaker)))
+          (hash-table-put! *eliza-mode* speaker #t)
+          (format "*puts eliza hat on, say \"bye\" to stop, continue ~a..*"
+                  nick))
+         ((hash-table-exists? *eliza-mode* speaker)
+          (let ((response (tell-eliza speech)))
+            (when (string-scan response "*is back")
+                (begin
+                  (hash-table-delete! *eliza-mode* speaker)
+                  ;; "shut up" could set this to #t in *say-something
+                  (set! *blocked* #f)))
+            response))
+         ((string? reply)
+          (begin
+              (inc! *chat-count*)
+              (set! *last-reply* reply))
+          reply)))))
 
 (define (disengage name)
   (hash-table-delete! *eliza-mode* name))
@@ -467,11 +477,10 @@
 
 (define (make-face emote)
 ;  (let time (time->seconds (time-difference (current-time) *lastface*)))
-  (if (<
+  (unless (<
         (time->seconds (time-difference (current-time) *lastface*))
         emote-limit)
-    ()
-    (if *emote-ok*
+    (when *emote-ok*
       (begin
           (set! *lastface* (current-time))
           (*make-face emote)))))

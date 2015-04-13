@@ -9,9 +9,13 @@
 (use srfi-98)
 (use scheme.char)
 
+(unless (file-exists? "config.scm")
+    (raise "File config.scm not found!"))
 (use config)
+(unless (equal? (gauche-version) gauche-ver)
+    (raise (format "Please upgrade to Gauche version ~a" gauche-ver)))
+
 (use brain)
-(use repl)
 
 (define-record-type world #t #t
   address port name (online-users) maintenance new)
@@ -185,7 +189,7 @@
     (else (format "Unknown error ~a" code))))
 
 (define (chat-message msg)
-  (let* ((str (format "~a : ~a" charname msg))
+  (let* ((str (format "~a : ~a" charname msg)) ; fixme: make it take the char name from the char server based on slot
          (len (+ (string-size str) 1)))
     (sys-sleep 1)
     (log "<~a" str)
@@ -296,7 +300,7 @@
            (string? (being-name id)))
       (cond
        ((and (eqv? effect 3)            ; heal
-             (string=? (being-name id) charname))
+             (string=? (being-name id) charname)) ; fixme: make it take the char name from the char server based on slot
         (being-emotion id 3))
        ((<= effect 1)                   ; job or exp level up
         (chat-message (format "Congratulations, ~a!"
@@ -340,7 +344,7 @@
   ;; WARNING: Please slow down, do not repeat, and do not SHOUT!
   (if (and (string-scan msg "automatically banned")
            *chat-ok*)
-      (stop-chatting 15))
+      (stop-chatting spam-timeout))
   'cont)
 
 (define (player-equip u8v)
@@ -461,6 +465,9 @@
   'cont)
 
 (define (whisper-response u8v)
+  ; fixme: reply a generic message saying that this is a bot (if normal user)
+  ; fixme: if GM, allow to send commands to control the bot
+  ;        ie. "say blablabla", "sit", "turn left", "move up", "emote 9"
   'cont)
 
 ;;; unknown request skipping
@@ -785,16 +792,11 @@
             (#x098 (whisper-response ((u8v (read-u8v 1)))))))
 
 (define (main args)
-  (let ((username username)
-        (password password))
-    (unless (string? password)
-      (raise "$CRAZYPASS not defined"))
-    (run-repl-server)
+  (begin
     (set! (port-buffering (standard-output-port) ) :none)
     (let* ((login-data (connect server port
                                 (login-handler username password)))
            (first-world (car (login-data-world login-data)))
-           (char-slot 0)
            (map-data (connect (world-address first-world) (world-port first-world)
                               (char-handler login-data char-slot))))
       (connect (map-data-address map-data) (map-data-port map-data)
