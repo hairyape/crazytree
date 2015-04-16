@@ -4,11 +4,13 @@
 (define-module defaults (export-all))
 (select-module defaults)
 (use gauche.process)
-(define (*get-from-process . arg)
-    (let* ((process (run-process arg :output :pipe))
-                  (line (read-line (process-output process))))
-                  (process-wait process)
-                  line))
+(define-syntax *get-from-process ; hygienic macro
+  (syntax-rules ()
+    ((_ args)
+     (let* ((process (run-process args :output :pipe))
+            (line (read-line (process-output process))))
+           (process-wait process)
+            line))))
 
 (define gauche-ver "0.9.4")
 (define username "")
@@ -22,6 +24,6 @@
 (define emote-limit 1)
 (define spam-timeout 15)
 (define loop-protection #f)
-(define version "0.0.5") ; fixme: get the version tag from the current folder
-(define build (*get-from-process "git" "rev-parse" "--abbrev-ref" "HEAD"))
-(define source (*get-from-process "git" "config" "--get" "remote.origin.url"))
+(define version "0.0.6") ; fixme: get the version tag from the current folder
+(define build (*get-from-process '(git rev-parse --abbrev-ref HEAD)))
+(define source (*get-from-process '(git config --get remote.origin.url)))

@@ -1,3 +1,4 @@
+(add-load-path "." :relative)
 (use brain)
 
 (define (say foo speaker)

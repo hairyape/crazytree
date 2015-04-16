@@ -9,6 +9,7 @@
 (use srfi-98)
 (use scheme.char)
 
+(add-load-path "." :relative)
 (unless (file-exists? "config.scm")
     (raise "File config.scm not found!"))
 (use config)

@@ -182,6 +182,7 @@
     "If you are trying to get me to tell jokes you are barking up the wrong tree!"
     "You wodden think they were funny anyhow. Leaf me alone!"
     "What is brown and sticky? A stick."
+    "What's the best way to carve wood? Whittle by whittle."
     ))
 
 (define *burning*
