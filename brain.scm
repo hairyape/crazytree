@@ -195,6 +195,39 @@
     "*is so hot!*"
     ))
 
+(define *eightball* ; taken from Limnoria/SupyBot
+  '("It is possible."
+    "Yes!"
+    "Of course."
+    "Naturally."
+    "Obviously."
+    "It shall be."
+    "The outlook is good."
+    "It is so."
+    "One would be wise to think so."
+    "The answer is certainly yes."
+    "In your dreams."
+    "I doubt it very much."
+    "No chance."
+    "The outlook is very poor."
+    "Unlikely."
+    "About as likely as pigs flying."
+    "You're kidding, right?"
+    "NO!"
+    "NO."
+    "No."
+    "Maybe..."
+    "No clue."
+    "I don't know."
+    "The outlook is hazy, please ask again later."
+    "What are you asking me for?"
+    "Come again?"
+    "You know the answer better than I."
+    "The answer is def-- oooh! shiny thing!"
+    "No idea."
+    "Perhaps."
+    ))
+
 (define *no-idea*
   '("what?"
     "what??"
@@ -355,6 +388,8 @@
     (random-from-list *pain*))
    ((string-scan speech "bye")
     (format "*waves goodbye to ~a in tears, come back soon!*" speaker))
+   ((one-of speech '("8ball" "8-ball" "eightball" "eight-ball" "8b"))
+    (react speaker *eightball*))
    ((string-scan speech "bad tree")
     (random-from-list '("I'm not bad! You are bad!"
                         "OK I'm bad"
@@ -387,9 +422,14 @@
     (begin
       (set! *blocked* #t)
       "*goes hide in a corner %%S*"))
-   ((and (one-of speech '("what" "why"))
-         (string-scan speech "?"))
-    (maybe "42"))
+   ((maybe
+       (and (one-of speech '("do you" "should I")) ; eight ball
+            (string-scan speech "?")))
+    (react speaker *eightball*))
+   ((maybe
+       (and (one-of speech '("what" "why"))
+         (string-scan speech "?")))
+    "42")
    ))
 
 (define (*say-no-tree speech speaker)
@@ -429,6 +469,7 @@
      $ string-downcase msg))
 
 (define *last-reply* "Vagina")
+(define *last-reply-time* (current-time))
 
 (define (say-something speech speaker)
   (unless (one-of (string-downcase speaker) blacklist)
@@ -438,7 +479,9 @@
              (reply (*say-something speech nick)))
         (cond
          ((and loop-protection
-               (equal? reply *last-reply*)) #f)
+               (equal? reply *last-reply*)
+               (< (time->seconds (time-difference (current-time) *last-reply-time*))
+                   loop-limit)) #f)
          ((and was-blocked *blocked*) #f)
          ((and (string-scan speech "talk to me")
                (string-scan speech "tree")
@@ -457,7 +500,8 @@
          ((string? reply)
           (begin
               (inc! *chat-count*)
-              (set! *last-reply* reply))
+              (set! *last-reply* reply)
+              (set! *last-reply-time* (current-time)))
           reply)))))
 
 (define (disengage name)
@@ -477,7 +521,6 @@
 (define *lastface* (current-time))
 
 (define (make-face emote)
-;  (let time (time->seconds (time-difference (current-time) *lastface*)))
   (unless (<
         (time->seconds (time-difference (current-time) *lastface*))
         emote-limit)
