@@ -22,8 +22,9 @@
 (define blacklist '())
 (define adjective "leafy")
 (define emote-limit 1)
+(define loop-limit 5)
 (define spam-timeout 15)
-(define loop-protection #f)
-(define version "0.0.6") ; fixme: get the version tag from the current folder
+(define loop-protection #t)
+(define version "0.0.7") ; fixme: get the version tag from the current folder
 (define build (*get-from-process '(git rev-parse --abbrev-ref HEAD)))
 (define source (*get-from-process '(git config --get remote.origin.url)))
