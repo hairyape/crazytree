@@ -354,7 +354,11 @@
             '("pokes tree" "poke tree"))
     "*tickles*")
    ((one-of speech '("water tree" "*pee" "*waters tree"
-                     "licks tree" "lick tree" "*does tree"))
+                     "licks tree" "lick tree" "*does tree"
+                     "rapes tree" "*violates tree"
+                     "fondles tree" "penetrates tree"
+                     "abuses tree" "molests tree" "rubs tree"
+                     "gropes tree" "bangs tree" "masturbates tree"))
     "ewwwww %%^")
    ((and (string-scan speech "answer")
          (one-of speech '("life" "universe" "everything")))
@@ -388,7 +392,7 @@
     (random-from-list *pain*))
    ((string-scan speech "bye")
     (format "*waves goodbye to ~a in tears, come back soon!*" speaker))
-   ((one-of speech '("8ball" "8-ball" "eightball" "eight-ball" "8b"))
+   ((one-of speech '("8ball" "8-ball" "eightball" "eight-ball" "8b" "eight ball"))
     (react speaker *eightball*))
    ((string-scan speech "bad tree")
     (random-from-list '("I'm not bad! You are bad!"
