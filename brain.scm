@@ -354,11 +354,7 @@
             '("pokes tree" "poke tree"))
     "*tickles*")
    ((one-of speech '("water tree" "*pee" "*waters tree"
-                     "licks tree" "lick tree" "*does tree"
-                     "rapes tree" "*violates tree"
-                     "fondles tree" "penetrates tree"
-                     "abuses tree" "molests tree" "rubs tree"
-                     "gropes tree" "bangs tree" "masturbates tree"))
+                     "licks tree" "lick tree"))
     "ewwwww %%^")
    ((and (string-scan speech "answer")
          (one-of speech '("life" "universe" "everything")))
