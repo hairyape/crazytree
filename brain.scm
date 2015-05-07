@@ -356,7 +356,7 @@
             '("hi tree" "hello tree" "hey tree" "heya tree" "hiya tree"
               "tree hi" "tree hello" "tree hey" "tree heya" "tree hiya")) ; some players have bad English...
     (begin
-      (set! *blocked* #f) ; fixme: automatically unblock without the need for "hi tree" after X hours (set in config)
+      (set! *blocked* #f)
       (react speaker *greetings*)))
    ((one-of speech
             '("kicks tree" "kick tree" "shake tree" "shakes tree"))
@@ -437,6 +437,7 @@
    ((string-scan speech "shut up")
     (begin
       (set! *blocked* #t)
+      (set! *blocked-time* (current-time))
       "*goes hide in a corner %%S*"))
    ((maybe
        (and (one-of speech '("do you" "should I")) ; eight ball
@@ -486,6 +487,7 @@
 
 (define *last-reply* "Vagina")
 (define *last-reply-time* (current-time))
+(define *blocked-time* (current-time))
 
 (define (say-something speech speaker)
   (unless (or (one-of (string-downcase speaker) blacklist)
@@ -495,6 +497,10 @@
              (nick (nick-name speaker))
              (was-blocked *blocked*)
              (reply (*say-something speech nick)))
+        (when (and was-blocked
+                   (> (time->seconds (time-difference (current-time) *blocked-time*))
+                       block-time))
+                (set! *blocked* #f))
         (cond
          ((and loop-protection
                (equal? reply *last-reply*)

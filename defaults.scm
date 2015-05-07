@@ -24,6 +24,7 @@
 (define emote-limit 1)
 (define loop-limit 5)
 (define spam-timeout 15)
+(define block-time 600)
 (define loop-protection #t)
 (define version "0.0.8") ; fixme: get the version tag from the current folder
 (define build (*get-from-process '(git rev-parse --abbrev-ref HEAD)))
