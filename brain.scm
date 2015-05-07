@@ -8,6 +8,22 @@
 (use eliza)
 (use config)
 
+(define *bad-words*
+  '("*does tree"
+    "violates tree" "violate tree"
+    "rapes" "rape"
+    "fondles" "fondle"
+    "penetrates tree" "penetrate tree"
+    "abuses tree"
+    "molests" "molest"
+    "rubs tree"
+    "gropes" "grope"
+    "bangs tree"
+    "masturbates" "masturbate"
+    "sex with tree"
+    "plunders tree" "plunder tree"
+    "caresses tree" "caress tree"))
+
 (define *greetings*
   '("Hi ~a!"
     "Hi ~a"
@@ -472,7 +488,9 @@
 (define *last-reply-time* (current-time))
 
 (define (say-something speech speaker)
-  (unless (one-of (string-downcase speaker) blacklist)
+  (unless (or (one-of (string-downcase speaker) blacklist)
+              (one-of (cleanup-message speech) *bad-words*)
+              (one-of (cleanup-message speech) bad-words))
       (let* ((speech (cleanup-message speech))
              (nick (nick-name speaker))
              (was-blocked *blocked*)

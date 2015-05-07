@@ -28,3 +28,4 @@
 (define version "0.0.8") ; fixme: get the version tag from the current folder
 (define build (*get-from-process '(git rev-parse --abbrev-ref HEAD)))
 (define source (*get-from-process '(git config --get remote.origin.url)))
+(define bad-words '())
