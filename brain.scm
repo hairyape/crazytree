@@ -433,7 +433,7 @@
              (string-scan speech "version"))
         (and (string-scan speech "what")
              (string-scan speech "source")))
-    (format "I am running CrazyTree v~a (~a). My source is at @@~a|~a@@" version build source source))
+    (format "I am running CrazyTree ~a (~a). My source is at @@~a|~a@@" version build source source))
    ((string-scan speech "shut up")
     (begin
       (set! *blocked* #t)
