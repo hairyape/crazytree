@@ -16,6 +16,9 @@
 (unless (equal? (gauche-version) gauche-ver)
     (raise (format "Please upgrade to Gauche version ~a" gauche-ver)))
 
+(when (equal? (string-copy source 0 4) "git@")
+    (set! source (string-append "https://" (string-copy source 4))))
+
 (use brain)
 
 (define-record-type world #t #t
