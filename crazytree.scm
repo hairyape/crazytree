@@ -559,7 +559,7 @@
 
 (define (login-request username password)
   (write-u16 #x64)
-  (write-u32 0)                       ; client version
+  (write-u32 1)                       ; client version
   (write-str username 24)
   (write-str password 24)
   (write-u8 3)                        ; flags
